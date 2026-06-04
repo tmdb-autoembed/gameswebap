@@ -78,14 +78,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
+      { title: "Gme" },
+      { name: "description", content: "Creative Mirror replicates website designs and extracts content from specified URLs." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { property: "og:title", content: "Gme" },
+      { property: "og:description", content: "Creative Mirror replicates website designs and extracts content from specified URLs." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Gme" },
+      { name: "twitter:description", content: "Creative Mirror replicates website designs and extracts content from specified URLs." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cff5f632-9efb-4559-95e7-98c2ac154430/id-preview-450060a5--113a68a6-86d4-45e9-84e5-4c862bf8d4b5.lovable.app-1780613890991.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/cff5f632-9efb-4559-95e7-98c2ac154430/id-preview-450060a5--113a68a6-86d4-45e9-84e5-4c862bf8d4b5.lovable.app-1780613890991.png" },
     ],
     links: [
       {
