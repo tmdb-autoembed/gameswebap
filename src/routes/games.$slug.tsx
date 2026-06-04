@@ -105,7 +105,7 @@ function GamePage() {
 
             <div className="mt-5 flex flex-wrap items-center gap-2">
               <span className="text-xs font-bold text-foreground/60 mr-1">Genres ›</span>
-              {game.genres?.map((g) => (
+              {game.genres?.map((g: string) => (
                 <span key={g} className={`px-3 py-1 rounded-full border text-xs font-bold ${genreColors[g] ?? "text-foreground/80 border-border bg-secondary"}`}>
                   {g}
                 </span>
