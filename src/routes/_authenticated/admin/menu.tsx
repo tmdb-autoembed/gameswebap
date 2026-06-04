@@ -35,7 +35,7 @@ function MenuAdmin() {
       <button onClick={() => save.mutate(blank)} className="community-btn px-4 h-10 rounded-full text-white font-bold mb-4">+ Add item</button>
       <div className="space-y-2">
         {(data?.items ?? []).map((m: any) => (
-          <MenuRow key={m.id} item={m} onSave={(d) => save.mutate({ ...d, id: m.id })} onDelete={() => del.mutate(m.id)} />
+          <MenuRow key={m.id} item={m} onSave={(d: any) => save.mutate({ ...d, id: m.id })} onDelete={() => del.mutate(m.id)} />
         ))}
       </div>
     </div>
