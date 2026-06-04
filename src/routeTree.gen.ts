@@ -9,8 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SoftwareRouteImport } from './routes/software'
+import { Route as RandomRouteImport } from './routes/random'
+import { Route as ConsoleGamesRouteImport } from './routes/console-games'
+import { Route as CommunityRouteImport } from './routes/community'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppsRouteImport } from './routes/apps'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GamesIndexRouteImport } from './routes/games.index'
 import { Route as GamesSlugRouteImport } from './routes/games.$slug'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
@@ -20,6 +27,36 @@ import { Route as AuthenticatedAdminImportRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminPostsIndexRouteImport } from './routes/_authenticated/admin/posts/index'
 import { Route as AuthenticatedAdminPostsIdRouteImport } from './routes/_authenticated/admin/posts/$id'
 
+const SoftwareRoute = SoftwareRouteImport.update({
+  id: '/software',
+  path: '/software',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RandomRoute = RandomRouteImport.update({
+  id: '/random',
+  path: '/random',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConsoleGamesRoute = ConsoleGamesRouteImport.update({
+  id: '/console-games',
+  path: '/console-games',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityRoute = CommunityRouteImport.update({
+  id: '/community',
+  path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppsRoute = AppsRouteImport.update({
+  id: '/apps',
+  path: '/apps',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
@@ -27,6 +64,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GamesIndexRoute = GamesIndexRouteImport.update({
+  id: '/games/',
+  path: '/games/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GamesSlugRoute = GamesSlugRouteImport.update({
@@ -76,8 +118,15 @@ const AuthenticatedAdminPostsIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/apps': typeof AppsRoute
+  '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
+  '/console-games': typeof ConsoleGamesRoute
+  '/random': typeof RandomRoute
+  '/software': typeof SoftwareRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/games/$slug': typeof GamesSlugRoute
+  '/games/': typeof GamesIndexRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
@@ -87,7 +136,14 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/apps': typeof AppsRoute
+  '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
+  '/console-games': typeof ConsoleGamesRoute
+  '/random': typeof RandomRoute
+  '/software': typeof SoftwareRoute
   '/games/$slug': typeof GamesSlugRoute
+  '/games': typeof GamesIndexRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
@@ -99,8 +155,15 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/apps': typeof AppsRoute
+  '/auth': typeof AuthRoute
+  '/community': typeof CommunityRoute
+  '/console-games': typeof ConsoleGamesRoute
+  '/random': typeof RandomRoute
+  '/software': typeof SoftwareRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/games/$slug': typeof GamesSlugRoute
+  '/games/': typeof GamesIndexRoute
   '/_authenticated/admin/import': typeof AuthenticatedAdminImportRoute
   '/_authenticated/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
@@ -112,8 +175,15 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/apps'
+    | '/auth'
+    | '/community'
+    | '/console-games'
+    | '/random'
+    | '/software'
     | '/admin'
     | '/games/$slug'
+    | '/games/'
     | '/admin/import'
     | '/admin/menu'
     | '/admin/settings'
@@ -123,7 +193,14 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/apps'
+    | '/auth'
+    | '/community'
+    | '/console-games'
+    | '/random'
+    | '/software'
     | '/games/$slug'
+    | '/games'
     | '/admin/import'
     | '/admin/menu'
     | '/admin/settings'
@@ -134,8 +211,15 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/apps'
+    | '/auth'
+    | '/community'
+    | '/console-games'
+    | '/random'
+    | '/software'
     | '/_authenticated/admin'
     | '/games/$slug'
+    | '/games/'
     | '/_authenticated/admin/import'
     | '/_authenticated/admin/menu'
     | '/_authenticated/admin/settings'
@@ -147,11 +231,60 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AppsRoute: typeof AppsRoute
+  AuthRoute: typeof AuthRoute
+  CommunityRoute: typeof CommunityRoute
+  ConsoleGamesRoute: typeof ConsoleGamesRoute
+  RandomRoute: typeof RandomRoute
+  SoftwareRoute: typeof SoftwareRoute
   GamesSlugRoute: typeof GamesSlugRoute
+  GamesIndexRoute: typeof GamesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/software': {
+      id: '/software'
+      path: '/software'
+      fullPath: '/software'
+      preLoaderRoute: typeof SoftwareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/random': {
+      id: '/random'
+      path: '/random'
+      fullPath: '/random'
+      preLoaderRoute: typeof RandomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/console-games': {
+      id: '/console-games'
+      path: '/console-games'
+      fullPath: '/console-games'
+      preLoaderRoute: typeof ConsoleGamesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community': {
+      id: '/community'
+      path: '/community'
+      fullPath: '/community'
+      preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apps': {
+      id: '/apps'
+      path: '/apps'
+      fullPath: '/apps'
+      preLoaderRoute: typeof AppsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -164,6 +297,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/games/': {
+      id: '/games/'
+      path: '/games'
+      fullPath: '/games/'
+      preLoaderRoute: typeof GamesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/games/$slug': {
@@ -263,7 +403,14 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AppsRoute: AppsRoute,
+  AuthRoute: AuthRoute,
+  CommunityRoute: CommunityRoute,
+  ConsoleGamesRoute: ConsoleGamesRoute,
+  RandomRoute: RandomRoute,
+  SoftwareRoute: SoftwareRoute,
   GamesSlugRoute: GamesSlugRoute,
+  GamesIndexRoute: GamesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
