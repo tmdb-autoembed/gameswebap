@@ -33,6 +33,7 @@ import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authen
 import { Route as AuthenticatedAdminPagesRouteImport } from './routes/_authenticated/admin/pages'
 import { Route as AuthenticatedAdminMenuRouteImport } from './routes/_authenticated/admin/menu'
 import { Route as AuthenticatedAdminImportRouteImport } from './routes/_authenticated/admin/import'
+import { Route as AuthenticatedAdminCommunityRouteImport } from './routes/_authenticated/admin/community'
 import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin/categories'
 import { Route as AuthenticatedAdminPostsIndexRouteImport } from './routes/_authenticated/admin/posts/index'
 import { Route as AuthenticatedAdminPostsIdRouteImport } from './routes/_authenticated/admin/posts/$id'
@@ -160,6 +161,12 @@ const AuthenticatedAdminImportRoute =
     path: '/import',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminCommunityRoute =
+  AuthenticatedAdminCommunityRouteImport.update({
+    id: '/community',
+    path: '/community',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminCategoriesRoute =
   AuthenticatedAdminCategoriesRouteImport.update({
     id: '/categories',
@@ -197,6 +204,7 @@ export interface FileRoutesByFullPath {
   '/profile/$username': typeof ProfileUsernameRoute
   '/games/': typeof GamesIndexRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/community': typeof AuthenticatedAdminCommunityRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/admin/pages': typeof AuthenticatedAdminPagesRoute
@@ -224,6 +232,7 @@ export interface FileRoutesByTo {
   '/profile/$username': typeof ProfileUsernameRoute
   '/games': typeof GamesIndexRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/community': typeof AuthenticatedAdminCommunityRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/admin/pages': typeof AuthenticatedAdminPagesRoute
@@ -254,6 +263,7 @@ export interface FileRoutesById {
   '/profile/$username': typeof ProfileUsernameRoute
   '/games/': typeof GamesIndexRoute
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/_authenticated/admin/community': typeof AuthenticatedAdminCommunityRoute
   '/_authenticated/admin/import': typeof AuthenticatedAdminImportRoute
   '/_authenticated/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/_authenticated/admin/pages': typeof AuthenticatedAdminPagesRoute
@@ -284,6 +294,7 @@ export interface FileRouteTypes {
     | '/profile/$username'
     | '/games/'
     | '/admin/categories'
+    | '/admin/community'
     | '/admin/import'
     | '/admin/menu'
     | '/admin/pages'
@@ -311,6 +322,7 @@ export interface FileRouteTypes {
     | '/profile/$username'
     | '/games'
     | '/admin/categories'
+    | '/admin/community'
     | '/admin/import'
     | '/admin/menu'
     | '/admin/pages'
@@ -340,6 +352,7 @@ export interface FileRouteTypes {
     | '/profile/$username'
     | '/games/'
     | '/_authenticated/admin/categories'
+    | '/_authenticated/admin/community'
     | '/_authenticated/admin/import'
     | '/_authenticated/admin/menu'
     | '/_authenticated/admin/pages'
@@ -539,6 +552,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminImportRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/community': {
+      id: '/_authenticated/admin/community'
+      path: '/community'
+      fullPath: '/admin/community'
+      preLoaderRoute: typeof AuthenticatedAdminCommunityRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/categories': {
       id: '/_authenticated/admin/categories'
       path: '/categories'
@@ -565,6 +585,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
+  AuthenticatedAdminCommunityRoute: typeof AuthenticatedAdminCommunityRoute
   AuthenticatedAdminImportRoute: typeof AuthenticatedAdminImportRoute
   AuthenticatedAdminMenuRoute: typeof AuthenticatedAdminMenuRoute
   AuthenticatedAdminPagesRoute: typeof AuthenticatedAdminPagesRoute
@@ -577,6 +598,7 @@ interface AuthenticatedAdminRouteRouteChildren {
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
     AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
+    AuthenticatedAdminCommunityRoute: AuthenticatedAdminCommunityRoute,
     AuthenticatedAdminImportRoute: AuthenticatedAdminImportRoute,
     AuthenticatedAdminMenuRoute: AuthenticatedAdminMenuRoute,
     AuthenticatedAdminPagesRoute: AuthenticatedAdminPagesRoute,
@@ -638,3 +660,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
