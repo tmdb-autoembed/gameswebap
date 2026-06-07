@@ -28,7 +28,7 @@ function PostDetail() {
   useEffect(() => { supabase.auth.getUser().then(({ data }) => setMe(data.user?.id ?? null)); }, []);
 
   const { data, isLoading } = useQuery({ queryKey: ["post", slug], queryFn: () => fn({ data: { slug } }) });
-  const p = data?.post;
+  const p: any = data?.post;
   const { data: rData } = useQuery({ queryKey: ["reviews", p?.id], queryFn: () => revFn({ data: { postId: p.id } }), enabled: !!p });
   const { data: cData } = useQuery({ queryKey: ["game-community", p?.id], queryFn: () => feedFn({ data: { gameId: p.id, limit: 4 } }), enabled: !!p });
 
@@ -40,10 +40,11 @@ function PostDetail() {
   if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading…</div>;
   if (!p) return <div className="min-h-screen flex items-center justify-center">Not found. <Link to="/" className="ml-2 text-primary">Home</Link></div>;
 
-  const screenshots: string[] = Array.isArray(p.system_requirements?.screenshots) ? p.system_requirements.screenshots : [];
+  const reqs: any = p.system_requirements ?? {};
+  const screenshots: string[] = Array.isArray(reqs.screenshots) ? reqs.screenshots : [];
   const downloadLinks: { name: string; url: string }[] = Array.isArray(p.download_links) ? p.download_links : [];
   const mirrors = downloadLinks.length ? downloadLinks : (p.download_url ? [{ name: "Direct", url: p.download_url }] : []);
-  const reqs = p.system_requirements ?? {};
+
 
   return (
     <div className="min-h-screen">
