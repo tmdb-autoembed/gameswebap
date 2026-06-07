@@ -112,34 +112,42 @@ export function FeedCard({ post, currentUserId }: { post: any; currentUserId: st
   );
 }
 
-const REACTIONS = [
-  { type: "like", emoji: "👍", color: "text-brand-blue" },
-  { type: "love", emoji: "❤️", color: "text-brand-pink" },
-  { type: "haha", emoji: "😂", color: "text-brand-amber" },
-  { type: "wow",  emoji: "😮", color: "text-brand-cyan" },
-  { type: "sad",  emoji: "😢", color: "text-muted-foreground" },
-  { type: "angry",emoji: "😡", color: "text-destructive" },
+const REACTIONS: { type: string; Icon: any; color: string }[] = [
+  { type: "like",  Icon: ThumbsUp, color: "text-brand-blue" },
+  { type: "love",  Icon: Heart,    color: "text-brand-pink" },
+  { type: "haha",  Icon: Laugh,    color: "text-brand-amber" },
+  { type: "wow",   Icon: Eye,      color: "text-brand-cyan" },
+  { type: "sad",   Icon: Frown,    color: "text-muted-foreground" },
+  { type: "angry", Icon: Angry,    color: "text-destructive" },
 ];
 
-function ReactionBar({ reactions, likes, active, onPick, disabled }: any) {
+function ReactionBar({ likes, active, onPick, disabled }: { reactions: any; likes: number; active: string | null; onPick: (t: string | null) => void; disabled: boolean }) {
+  const ActiveIcon = REACTIONS.find((r) => r.type === active)?.Icon ?? Heart;
   return (
     <div className="relative group">
       <button disabled={disabled} onClick={() => onPick(active ?? "like")}
         className={`flex items-center gap-1.5 px-3 h-9 rounded-full text-sm hover:bg-secondary ${active ? "text-brand-pink" : "text-foreground/80"} disabled:opacity-50`}>
-        <Heart size={16} className={active ? "fill-current" : ""} /> {likes ?? 0}
+        <ActiveIcon size={16} className={active ? "fill-current" : ""} /> {likes ?? 0}
       </button>
       {!disabled && (
         <div className="absolute bottom-full left-0 mb-1 opacity-0 group-hover:opacity-100 transition pointer-events-none group-hover:pointer-events-auto">
           <div className="glass-strong rounded-full p-1 flex gap-0.5">
-            {REACTIONS.map((r) => (
-              <button key={r.type} onClick={() => onPick(r.type)} className="w-9 h-9 rounded-full hover:scale-125 transition text-lg">{r.emoji}</button>
-            ))}
+            {REACTIONS.map((r) => {
+              const I = r.Icon;
+              return (
+                <button key={r.type} onClick={() => onPick(r.type)} title={r.type}
+                  className={`w-9 h-9 rounded-full hover:scale-125 transition flex items-center justify-center ${r.color}`}>
+                  <I size={18} />
+                </button>
+              );
+            })}
           </div>
         </div>
       )}
     </div>
   );
 }
+
 
 function timeAgo(iso: string) {
   const s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
