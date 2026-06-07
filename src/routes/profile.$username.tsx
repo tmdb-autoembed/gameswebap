@@ -35,20 +35,21 @@ function ProfilePage() {
 
   const { data: feedData } = useQuery({
     queryKey: ["author-feed", prof?.user_id],
-    queryFn: () => feedFn({ data: { authorId: prof.user_id, limit: 30 } }),
+    queryFn: () => feedFn({ data: { authorId: prof!.user_id, limit: 30 } }),
     enabled: !!prof,
   });
 
   const { data: followingData } = useQuery({
     queryKey: ["follow", me, prof?.user_id],
-    queryFn: () => isFollowFn({ data: { targetId: prof.user_id } }),
+    queryFn: () => isFollowFn({ data: { targetId: prof!.user_id } }),
     enabled: !!me && !!prof && !isMe,
   });
 
   const toggle = useMutation({
-    mutationFn: () => followFn({ data: { targetId: prof.user_id } }),
+    mutationFn: () => followFn({ data: { targetId: prof!.user_id } }),
     onSuccess: () => { qc.invalidateQueries({ queryKey: ["follow"] }); qc.invalidateQueries({ queryKey: ["profile", username] }); },
   });
+
 
   if (!prof) return <div className="min-h-screen"><SiteHeader /><p className="p-12 text-center text-muted-foreground">Profile not found</p></div>;
 
