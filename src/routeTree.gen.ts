@@ -31,6 +31,7 @@ import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authentic
 import { Route as AuthenticatedMessagesPeerIdRouteImport } from './routes/_authenticated/messages/$peerId'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
 import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin/reviews'
+import { Route as AuthenticatedAdminRequestsRouteImport } from './routes/_authenticated/admin/requests'
 import { Route as AuthenticatedAdminPagesRouteImport } from './routes/_authenticated/admin/pages'
 import { Route as AuthenticatedAdminMenuRouteImport } from './routes/_authenticated/admin/menu'
 import { Route as AuthenticatedAdminImportRouteImport } from './routes/_authenticated/admin/import'
@@ -153,6 +154,12 @@ const AuthenticatedAdminReviewsRoute =
     path: '/reviews',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminRequestsRoute =
+  AuthenticatedAdminRequestsRouteImport.update({
+    id: '/requests',
+    path: '/requests',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminPagesRoute = AuthenticatedAdminPagesRouteImport.update({
   id: '/pages',
   path: '/pages',
@@ -223,6 +230,7 @@ export interface FileRoutesByFullPath {
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/admin/pages': typeof AuthenticatedAdminPagesRoute
+  '/admin/requests': typeof AuthenticatedAdminRequestsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/messages/$peerId': typeof AuthenticatedMessagesPeerIdRoute
@@ -253,6 +261,7 @@ export interface FileRoutesByTo {
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/admin/pages': typeof AuthenticatedAdminPagesRoute
+  '/admin/requests': typeof AuthenticatedAdminRequestsRoute
   '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/messages/$peerId': typeof AuthenticatedMessagesPeerIdRoute
@@ -286,6 +295,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/import': typeof AuthenticatedAdminImportRoute
   '/_authenticated/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/_authenticated/admin/pages': typeof AuthenticatedAdminPagesRoute
+  '/_authenticated/admin/requests': typeof AuthenticatedAdminRequestsRoute
   '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/messages/$peerId': typeof AuthenticatedMessagesPeerIdRoute
@@ -319,6 +329,7 @@ export interface FileRouteTypes {
     | '/admin/import'
     | '/admin/menu'
     | '/admin/pages'
+    | '/admin/requests'
     | '/admin/reviews'
     | '/admin/settings'
     | '/messages/$peerId'
@@ -349,6 +360,7 @@ export interface FileRouteTypes {
     | '/admin/import'
     | '/admin/menu'
     | '/admin/pages'
+    | '/admin/requests'
     | '/admin/reviews'
     | '/admin/settings'
     | '/messages/$peerId'
@@ -381,6 +393,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/import'
     | '/_authenticated/admin/menu'
     | '/_authenticated/admin/pages'
+    | '/_authenticated/admin/requests'
     | '/_authenticated/admin/reviews'
     | '/_authenticated/admin/settings'
     | '/_authenticated/messages/$peerId'
@@ -564,6 +577,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminReviewsRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/requests': {
+      id: '/_authenticated/admin/requests'
+      path: '/requests'
+      fullPath: '/admin/requests'
+      preLoaderRoute: typeof AuthenticatedAdminRequestsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/pages': {
       id: '/_authenticated/admin/pages'
       path: '/pages'
@@ -630,6 +650,7 @@ interface AuthenticatedAdminRouteRouteChildren {
   AuthenticatedAdminImportRoute: typeof AuthenticatedAdminImportRoute
   AuthenticatedAdminMenuRoute: typeof AuthenticatedAdminMenuRoute
   AuthenticatedAdminPagesRoute: typeof AuthenticatedAdminPagesRoute
+  AuthenticatedAdminRequestsRoute: typeof AuthenticatedAdminRequestsRoute
   AuthenticatedAdminReviewsRoute: typeof AuthenticatedAdminReviewsRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -645,6 +666,7 @@ const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren
     AuthenticatedAdminImportRoute: AuthenticatedAdminImportRoute,
     AuthenticatedAdminMenuRoute: AuthenticatedAdminMenuRoute,
     AuthenticatedAdminPagesRoute: AuthenticatedAdminPagesRoute,
+    AuthenticatedAdminRequestsRoute: AuthenticatedAdminRequestsRoute,
     AuthenticatedAdminReviewsRoute: AuthenticatedAdminReviewsRoute,
     AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
