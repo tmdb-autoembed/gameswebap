@@ -24,6 +24,7 @@ import { Route as CommunityPostIdRouteImport } from './routes/community.$postId'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedMessagesIndexRouteImport } from './routes/_authenticated/messages/index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedMessagesPeerIdRouteImport } from './routes/_authenticated/messages/$peerId'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
 import { Route as AuthenticatedAdminMenuRouteImport } from './routes/_authenticated/admin/menu'
 import { Route as AuthenticatedAdminImportRouteImport } from './routes/_authenticated/admin/import'
@@ -105,6 +106,12 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
+const AuthenticatedMessagesPeerIdRoute =
+  AuthenticatedMessagesPeerIdRouteImport.update({
+    id: '/messages/$peerId',
+    path: '/messages/$peerId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminSettingsRoute =
   AuthenticatedAdminSettingsRouteImport.update({
     id: '/settings',
@@ -151,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/messages/$peerId': typeof AuthenticatedMessagesPeerIdRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/messages/': typeof AuthenticatedMessagesIndexRoute
   '/admin/posts/$id': typeof AuthenticatedAdminPostsIdRoute
@@ -171,6 +179,7 @@ export interface FileRoutesByTo {
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/messages/$peerId': typeof AuthenticatedMessagesPeerIdRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/messages': typeof AuthenticatedMessagesIndexRoute
   '/admin/posts/$id': typeof AuthenticatedAdminPostsIdRoute
@@ -194,6 +203,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/import': typeof AuthenticatedAdminImportRoute
   '/_authenticated/admin/menu': typeof AuthenticatedAdminMenuRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/_authenticated/messages/$peerId': typeof AuthenticatedMessagesPeerIdRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/messages/': typeof AuthenticatedMessagesIndexRoute
   '/_authenticated/admin/posts/$id': typeof AuthenticatedAdminPostsIdRoute
@@ -217,6 +227,7 @@ export interface FileRouteTypes {
     | '/admin/import'
     | '/admin/menu'
     | '/admin/settings'
+    | '/messages/$peerId'
     | '/admin/'
     | '/messages/'
     | '/admin/posts/$id'
@@ -237,6 +248,7 @@ export interface FileRouteTypes {
     | '/admin/import'
     | '/admin/menu'
     | '/admin/settings'
+    | '/messages/$peerId'
     | '/admin'
     | '/messages'
     | '/admin/posts/$id'
@@ -259,6 +271,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/import'
     | '/_authenticated/admin/menu'
     | '/_authenticated/admin/settings'
+    | '/_authenticated/messages/$peerId'
     | '/_authenticated/admin/'
     | '/_authenticated/messages/'
     | '/_authenticated/admin/posts/$id'
@@ -386,6 +399,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/messages/$peerId': {
+      id: '/_authenticated/messages/$peerId'
+      path: '/messages/$peerId'
+      fullPath: '/messages/$peerId'
+      preLoaderRoute: typeof AuthenticatedMessagesPeerIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/settings': {
       id: '/_authenticated/admin/settings'
       path: '/settings'
@@ -450,11 +470,13 @@ const AuthenticatedAdminRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
+  AuthenticatedMessagesPeerIdRoute: typeof AuthenticatedMessagesPeerIdRoute
   AuthenticatedMessagesIndexRoute: typeof AuthenticatedMessagesIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
+  AuthenticatedMessagesPeerIdRoute: AuthenticatedMessagesPeerIdRoute,
   AuthenticatedMessagesIndexRoute: AuthenticatedMessagesIndexRoute,
 }
 
