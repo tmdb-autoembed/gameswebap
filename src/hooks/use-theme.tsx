@@ -11,6 +11,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setTheme(t);
     document.documentElement.classList.toggle("light", t === "light");
     document.documentElement.classList.toggle("dark", t === "dark");
+    document.documentElement.dataset.theme = t;
   }, []);
   const toggle = () => {
     setTheme((prev) => {
@@ -18,6 +19,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       localStorage.setItem("theme", next);
       document.documentElement.classList.toggle("light", next === "light");
       document.documentElement.classList.toggle("dark", next === "dark");
+      document.documentElement.dataset.theme = next;
       return next;
     });
   };

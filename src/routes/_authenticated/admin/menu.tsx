@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { adminListMenu, adminSaveMenu, adminDeleteMenu } from "@/lib/menu.functions";
+import { adminListMenu, adminSaveMenu, adminDeleteMenu, adminSeedDefaultMenu } from "@/lib/menu.functions";
 import { useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/admin/menu")({
@@ -14,6 +14,7 @@ function MenuAdmin() {
   const listFn = useServerFn(adminListMenu);
   const saveFn = useServerFn(adminSaveMenu);
   const delFn = useServerFn(adminDeleteMenu);
+  const seedFn = useServerFn(adminSeedDefaultMenu);
   const { data, refetch } = useQuery({ queryKey: ["admin-menu"], queryFn: () => listFn({}) });
   const [items, setItems] = useState<any[]>([]);
   const items_ = data?.items ?? items;
@@ -26,13 +27,17 @@ function MenuAdmin() {
     mutationFn: (id: string) => delFn({ data: { id } }),
     onSuccess: () => refetch(),
   });
+  const seed = useMutation({ mutationFn: () => seedFn({}), onSuccess: () => refetch() });
 
   const blank = { label: "New", href: "/", icon: "Circle", color: "#7c3aed", sort_order: (data?.items?.length ?? 0) + 1, enabled: true };
 
   return (
     <div>
       <h1 className="text-3xl font-display font-black mb-6">Menu items</h1>
-      <button onClick={() => save.mutate(blank)} className="community-btn px-4 h-10 rounded-full text-white font-bold mb-4">+ Add item</button>
+      <div className="mb-4 flex flex-wrap gap-2">
+        <button onClick={() => save.mutate(blank)} className="community-btn px-4 h-10 rounded-full text-white font-bold">+ Add item</button>
+        <button onClick={() => seed.mutate()} disabled={seed.isPending} className="px-4 h-10 rounded-full bg-secondary border border-border font-bold">{seed.isPending ? "Adding…" : "Add default CreativeConor menu"}</button>
+      </div>
       <div className="space-y-2">
         {(data?.items ?? []).map((m: any) => (
           <MenuRow key={m.id} item={m} onSave={(d: any) => save.mutate({ ...d, id: m.id })} onDelete={() => del.mutate(m.id)} />

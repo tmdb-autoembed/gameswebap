@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Search, Sun, Moon, Menu, Users, Gamepad2, Dice5, X, ArrowUp, TrendingUp, LayoutGrid, Smartphone, Lock, Heart, MessageSquare, Circle, LogIn, Shield, User, BookOpen, Sparkles, MessageCircle } from "lucide-react";
+import { Search, Sun, Moon, Menu, Users, Gamepad2, Dice5, X, ArrowUp, TrendingUp, LayoutGrid, Smartphone, Lock, Heart, MessageSquare, Circle, LogIn, Shield, User, MessageCircle, Home, Plus, Bell, Tv } from "lucide-react";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { listMenu, getMyRole } from "@/lib/menu.functions";
@@ -46,7 +46,7 @@ export function SiteHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-background/70 border-b border-border/40">
+    <header className="sticky top-0 z-50 backdrop-blur-xl bg-background/82 border-b border-white/10 shadow-[0_12px_48px_-36px_rgba(139,92,246,0.9)]">
       <div className="max-w-[1400px] mx-auto px-4 lg:px-8 h-16 flex items-center justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <button onClick={() => setOpen(true)} className="lg:hidden text-foreground/80" aria-label="menu">
@@ -66,30 +66,30 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-1.5 lg:gap-2">
-          <button onClick={goRandom} title="Random post" className="h-9 w-9 flex items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 text-white shadow-lg shadow-purple-500/30" aria-label="Random">
+          <button onClick={goRandom} title="Random post" className="h-10 w-10 flex items-center justify-center rounded-full bg-gradient-to-br from-fuchsia-500 to-purple-600 text-white shadow-lg shadow-purple-500/30 hover:scale-105 transition-transform" aria-label="Random">
             <Dice5 size={16} />
           </button>
           <Link to="/community" className="community-btn hidden md:inline-flex items-center gap-2 h-9 px-3 rounded-full text-white text-xs font-bold tracking-wide">
             <Users size={14} /> COMMUNITY
           </Link>
-          <button onClick={() => setSearchOpen((s) => !s)} className="h-9 w-9 flex items-center justify-center rounded-full bg-secondary text-foreground/80" aria-label="Search">
+          <button onClick={() => setSearchOpen((s) => !s)} className="h-10 w-10 flex items-center justify-center rounded-full bg-secondary/80 border border-white/10 text-foreground/80" aria-label="Search">
             <Search size={16} />
           </button>
-          <button onClick={toggle} className="h-9 w-9 flex items-center justify-center rounded-full bg-secondary text-foreground/80" aria-label="Toggle theme">
+          <button onClick={toggle} className="h-10 w-10 flex items-center justify-center rounded-full bg-secondary/80 border border-white/10 text-foreground/80" aria-label="Toggle theme">
             {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
           </button>
           {authed && (
-            <Link to="/messages" className="h-9 w-9 hidden sm:flex items-center justify-center rounded-full bg-secondary text-foreground/80" aria-label="Messages">
+            <Link to="/messages" className="h-10 w-10 hidden sm:flex items-center justify-center rounded-full bg-secondary/80 border border-white/10 text-foreground/80" aria-label="Messages">
               <MessageCircle size={16} />
             </Link>
           )}
           {roleData?.isAdmin ? (
-            <Link to="/admin" className="h-9 w-9 flex items-center justify-center rounded-full bg-secondary text-foreground/80" aria-label="Admin">
+            <Link to="/admin" className="h-10 w-10 flex items-center justify-center rounded-full bg-secondary/80 border border-white/10 text-foreground/80" aria-label="Admin">
               <Shield size={16} />
             </Link>
           ) : null}
           {!authed ? (
-            <Link to="/auth" className="h-9 w-9 flex items-center justify-center rounded-full bg-secondary text-foreground/80" aria-label="Sign in">
+            <Link to="/auth" className="h-10 w-10 flex items-center justify-center rounded-full bg-secondary/80 border border-white/10 text-foreground/80" aria-label="Sign in">
               <LogIn size={16} />
             </Link>
           ) : (
@@ -98,7 +98,7 @@ export function SiteHeader() {
               const { data } = await supabase.auth.getUser();
               const { data: prof } = await supabase.from("community_profiles").select("username").eq("user_id", data.user!.id).maybeSingle();
               if (prof?.username) navigate({ to: "/profile/$username", params: { username: prof.username } });
-            }} className="h-9 w-9 flex items-center justify-center rounded-full gradient-purple-pink text-white" aria-label="Profile">
+            }} className="h-10 w-10 flex items-center justify-center rounded-full gradient-purple-pink text-white border border-white/10" aria-label="Profile">
               <User size={16} />
             </Link>
           )}
@@ -143,6 +143,18 @@ export function SiteHeader() {
           </div>
         </div>
       )}
+
+      <nav className="md:hidden fixed left-4 right-4 bottom-4 z-[70] h-20 rounded-[1.6rem] border border-white/10 bg-background/88 backdrop-blur-2xl shadow-[0_22px_80px_-34px_rgba(0,0,0,0.9)] flex items-center justify-around">
+        <Link to="/" className="mobile-dock-active" aria-label="Home"><Home size={26} /></Link>
+        <Link to="/games" className="mobile-dock-item" aria-label="Games"><Tv size={25} /></Link>
+        <button onClick={() => setSearchOpen(true)} className="mobile-dock-create" aria-label="Create or search"><Plus size={28} /></button>
+        <button onClick={() => setSearchOpen(true)} className="mobile-dock-item" aria-label="Search"><Search size={26} /></button>
+        {authed ? (
+          <Link to="/messages" className="mobile-dock-item" aria-label="Messages"><Bell size={24} /></Link>
+        ) : (
+          <Link to="/auth" className="mobile-dock-item" aria-label="Sign in"><User size={24} /></Link>
+        )}
+      </nav>
 
       {open && (
         <div className="fixed inset-0 z-[60] lg:hidden">

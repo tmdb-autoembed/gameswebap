@@ -12,7 +12,7 @@ export function HeroSlider() {
 
   const slide = heroSlides[i];
   return (
-    <section className="relative">
+    <section className="relative hidden md:block">
       <div className="max-w-[1400px] mx-auto px-4 lg:px-8 pt-6">
         <div className="relative rounded-3xl overflow-hidden h-[420px] md:h-[520px] shadow-2xl shadow-purple-950/40">
           <div
@@ -22,17 +22,17 @@ export function HeroSlider() {
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/70 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-transparent to-transparent" />
 
-          <div className="relative h-full flex flex-col justify-end md:justify-center p-6 md:p-12 max-w-xl">
-            <span className="inline-flex w-fit items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 border border-primary/40 text-primary text-xs font-bold tracking-wider">
+          <div key={slide.game.slug} className="relative h-full flex flex-col justify-end md:justify-center p-6 md:p-12 max-w-xl">
+            <span className="fade-up-item inline-flex w-fit items-center gap-1.5 px-3 py-1 rounded-full bg-primary/20 border border-primary/40 text-primary text-xs font-bold tracking-wider">
               <Star size={12} fill="currentColor" /> FEATURED
             </span>
-            <h1 className="font-display font-black text-4xl md:text-6xl mt-4 leading-tight tracking-wide drop-shadow-[0_0_20px_rgba(0,0,0,0.6)]">
+            <h1 className="fade-up-item [animation-delay:90ms] font-display font-black text-4xl md:text-6xl mt-4 leading-tight tracking-wide drop-shadow-[0_0_20px_rgba(0,0,0,0.6)]">
               {slide.game.title.toUpperCase()}
             </h1>
-            <p className="mt-4 text-sm md:text-base text-foreground/80 max-w-md line-clamp-3">
+            <p className="fade-up-item [animation-delay:180ms] mt-4 text-sm md:text-base text-foreground/80 max-w-md line-clamp-3">
               {slide.game.description}
             </p>
-            <div className="flex gap-3 mt-6">
+            <div className="fade-up-item [animation-delay:270ms] flex gap-3 mt-6">
               <Link
                 to="/games/$slug"
                 params={{ slug: slide.game.slug }}
