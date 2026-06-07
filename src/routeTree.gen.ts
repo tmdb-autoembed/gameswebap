@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SoftwareRouteImport } from './routes/software'
+import { Route as RequestGameRouteImport } from './routes/request-game'
 import { Route as RandomRouteImport } from './routes/random'
 import { Route as ConsoleGamesRouteImport } from './routes/console-games'
 import { Route as CommunityRouteImport } from './routes/community'
@@ -34,6 +35,11 @@ import { Route as AuthenticatedAdminPostsIdRouteImport } from './routes/_authent
 const SoftwareRoute = SoftwareRouteImport.update({
   id: '/software',
   path: '/software',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RequestGameRoute = RequestGameRouteImport.update({
+  id: '/request-game',
+  path: '/request-game',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RandomRoute = RandomRouteImport.update({
@@ -149,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
+  '/request-game': typeof RequestGameRoute
   '/software': typeof SoftwareRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/community/$postId': typeof CommunityPostIdRoute
@@ -171,6 +178,7 @@ export interface FileRoutesByTo {
   '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
+  '/request-game': typeof RequestGameRoute
   '/software': typeof SoftwareRoute
   '/community/$postId': typeof CommunityPostIdRoute
   '/games/$slug': typeof GamesSlugRoute
@@ -194,6 +202,7 @@ export interface FileRoutesById {
   '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
+  '/request-game': typeof RequestGameRoute
   '/software': typeof SoftwareRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
   '/community/$postId': typeof CommunityPostIdRoute
@@ -218,6 +227,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/console-games'
     | '/random'
+    | '/request-game'
     | '/software'
     | '/admin'
     | '/community/$postId'
@@ -240,6 +250,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/console-games'
     | '/random'
+    | '/request-game'
     | '/software'
     | '/community/$postId'
     | '/games/$slug'
@@ -262,6 +273,7 @@ export interface FileRouteTypes {
     | '/community'
     | '/console-games'
     | '/random'
+    | '/request-game'
     | '/software'
     | '/_authenticated/admin'
     | '/community/$postId'
@@ -286,6 +298,7 @@ export interface RootRouteChildren {
   CommunityRoute: typeof CommunityRouteWithChildren
   ConsoleGamesRoute: typeof ConsoleGamesRoute
   RandomRoute: typeof RandomRoute
+  RequestGameRoute: typeof RequestGameRoute
   SoftwareRoute: typeof SoftwareRoute
   GamesSlugRoute: typeof GamesSlugRoute
   ProfileUsernameRoute: typeof ProfileUsernameRoute
@@ -299,6 +312,13 @@ declare module '@tanstack/react-router' {
       path: '/software'
       fullPath: '/software'
       preLoaderRoute: typeof SoftwareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/request-game': {
+      id: '/request-game'
+      path: '/request-game'
+      fullPath: '/request-game'
+      preLoaderRoute: typeof RequestGameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/random': {
@@ -503,6 +523,7 @@ const rootRouteChildren: RootRouteChildren = {
   CommunityRoute: CommunityRouteWithChildren,
   ConsoleGamesRoute: ConsoleGamesRoute,
   RandomRoute: RandomRoute,
+  RequestGameRoute: RequestGameRoute,
   SoftwareRoute: SoftwareRoute,
   GamesSlugRoute: GamesSlugRoute,
   ProfileUsernameRoute: ProfileUsernameRoute,
