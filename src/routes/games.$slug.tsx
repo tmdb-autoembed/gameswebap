@@ -7,8 +7,8 @@ import { listFeed } from "@/lib/community.functions";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { supabase } from "@/integrations/supabase/client";
-import { Download, Star, Users, ThumbsUp, ThumbsDown, MessageCircle, MonitorCheck, Calendar, HardDrive, Cpu, MemoryStick, Tag, Send } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Download, Star, Users, ThumbsUp, ThumbsDown, MessageCircle, MonitorCheck, Calendar, HardDrive, Cpu, MemoryStick, Tag, Send, Heart, Flag } from "lucide-react";
+import { useEffect, useState, type CSSProperties } from "react";
 
 export const Route = createFileRoute("/games/$slug")({
   component: PostDetail,
@@ -74,8 +74,8 @@ function PostDetail() {
                   {p.recommend_percent && <span className="text-sm text-emerald-400 ml-3">{p.recommend_percent}% recommend</span>}
                 </div>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {(p.genres ?? []).map((g: string) => <span key={g} className="px-3 h-7 inline-flex items-center rounded-full glass text-xs">{g}</span>)}
-                  {p.genres_text && p.genres_text.split(",").map((g: string) => <span key={g} className="px-3 h-7 inline-flex items-center rounded-full glass text-xs">{g.trim()}</span>)}
+                  {(p.genres ?? []).map((g: string, i: number) => <GenreTag key={g} label={g} index={i} />)}
+                  {p.genres_text && p.genres_text.split(",").map((g: string, i: number) => <GenreTag key={g} label={g.trim()} index={i} />)}
                 </div>
                 <p className="text-foreground/85 mb-6 leading-relaxed whitespace-pre-wrap">{p.description}</p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6 text-sm">
@@ -88,15 +88,17 @@ function PostDetail() {
                   {p.platform && <Stat icon={MonitorCheck} label="Platform" value={p.platform} />}
                   {p.ram_required && <Stat icon={MemoryStick} label="RAM" value={p.ram_required} />}
                 </div>
-                <div className="flex flex-wrap gap-3">
-                  {mirrors.length > 0 && (
-                    <a href={mirrors[0].url} target="_blank" rel="noreferrer" className="download-btn inline-flex items-center gap-2 h-12 px-6 rounded-full text-white font-bold glow-pink">
-                      <Download size={18} /> Download
-                    </a>
-                  )}
-                  <button className="h-12 px-5 rounded-full glass inline-flex items-center gap-2 font-bold"><ThumbsUp size={16} className="text-brand-blue" /> {p.likes ?? 0}</button>
-                  <button className="h-12 px-5 rounded-full glass inline-flex items-center gap-2 font-bold"><ThumbsDown size={16} className="text-muted-foreground" /> {p.dislikes ?? 0}</button>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+                  <button className="detail-action-card"><Heart size={17} className="text-rose-300" /> Favorite</button>
+                  <button className="detail-action-card"><Flag size={17} className="text-amber-300" /> Report</button>
+                  <button className="detail-action-card"><ThumbsUp size={17} className="text-brand-blue" /> {p.likes ?? 0}</button>
+                  <button className="detail-action-card"><ThumbsDown size={17} className="text-muted-foreground" /> {p.dislikes ?? 0}</button>
                 </div>
+                {mirrors.length > 0 && (
+                  <a href={mirrors[0].url} target="_blank" rel="noreferrer" className="download-btn inline-flex items-center gap-2 h-12 px-6 rounded-full text-white font-bold glow-pink">
+                    <Download size={18} /> Download
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -187,6 +189,19 @@ function PostDetail() {
       </main>
       <SiteFooter />
     </div>
+  );
+}
+
+const genreColors = ["#06b6d4", "#8b5cf6", "#10b981", "#f59e0b", "#ec4899", "#6366f1"];
+function GenreTag({ label, index }: { label: string; index: number }) {
+  const color = genreColors[index % genreColors.length];
+  return (
+    <span
+      className="genre-tag"
+      style={{ "--g-color": color, "--g-bg": `${color}1a`, "--g-border": `${color}55` } as CSSProperties}
+    >
+      {label}
+    </span>
   );
 }
 

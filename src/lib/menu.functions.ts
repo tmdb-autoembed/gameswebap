@@ -76,3 +76,27 @@ export const getMyRole = createServerFn({ method: "GET" })
     const roles = (data ?? []).map((r) => r.role);
     return { roles, isAdmin: roles.includes("admin") };
   });
+
+const defaultMenuItems = [
+  { label: "Games", href: "/games", icon: "Gamepad2", color: "#22d3ee", sort_order: 1, enabled: true },
+  { label: "Top", href: "/games?sort=rating", icon: "ArrowUp", color: "#f59e0b", sort_order: 2, enabled: true },
+  { label: "Trending", href: "/games?sort=popular", icon: "TrendingUp", color: "#ec4899", sort_order: 3, enabled: true },
+  { label: "Software", href: "/software", icon: "LayoutGrid", color: "#8b5cf6", sort_order: 4, enabled: true },
+  { label: "Apps", href: "/apps", icon: "Smartphone", color: "#3b82f6", sort_order: 5, enabled: true },
+  { label: "Console Games", href: "/console-games", icon: "Lock", color: "#10b981", sort_order: 6, enabled: true },
+  { label: "Donate", href: "/donate", icon: "Heart", color: "#ec4899", sort_order: 7, enabled: true },
+  { label: "Request", href: "/request-game", icon: "MessageSquare", color: "#06b6d4", sort_order: 8, enabled: true },
+];
+
+export const adminSeedDefaultMenu = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data: existing, error: readError } = await context.supabase.from("menu_items").select("href");
+    if (readError) throw new Error(readError.message);
+    const existingHrefs = new Set((existing ?? []).map((item) => item.href));
+    const missing = defaultMenuItems.filter((item) => !existingHrefs.has(item.href));
+    if (missing.length === 0) return { inserted: 0 };
+    const { error } = await context.supabase.from("menu_items").insert(missing);
+    if (error) throw new Error(error.message);
+    return { inserted: missing.length };
+  });

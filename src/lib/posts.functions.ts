@@ -30,7 +30,7 @@ export const listPublicPosts = createServerFn({ method: "POST" })
     search?: string;
     genre?: string;
     year?: number;
-    sort?: "newest" | "rating" | "title";
+    sort?: "newest" | "rating" | "popular" | "title";
     limit?: number;
     offset?: number;
   }) => d)
@@ -44,6 +44,7 @@ export const listPublicPosts = createServerFn({ method: "POST" })
     const sort = data.sort ?? "newest";
     if (sort === "newest") q = q.order("created_at", { ascending: false });
     else if (sort === "rating") q = q.order("rating", { ascending: false });
+    else if (sort === "popular") q = q.order("download_count", { ascending: false, nullsFirst: false });
     else q = q.order("title", { ascending: true });
     q = q.range(data.offset ?? 0, (data.offset ?? 0) + (data.limit ?? 24) - 1);
     const { data: rows, count, error } = await q;
