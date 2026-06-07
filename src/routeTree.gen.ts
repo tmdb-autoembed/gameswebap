@@ -14,6 +14,7 @@ import { Route as RequestGameRouteImport } from './routes/request-game'
 import { Route as RandomRouteImport } from './routes/random'
 import { Route as ConsoleGamesRouteImport } from './routes/console-games'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppsRouteImport } from './routes/apps'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
@@ -55,6 +56,11 @@ const ConsoleGamesRoute = ConsoleGamesRouteImport.update({
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
   '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
@@ -175,6 +182,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
   '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
@@ -199,6 +207,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
+  '/blog': typeof BlogRoute
   '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
@@ -224,6 +233,7 @@ export interface FileRouteTypes {
     | '/'
     | '/apps'
     | '/auth'
+    | '/blog'
     | '/community'
     | '/console-games'
     | '/random'
@@ -247,6 +257,7 @@ export interface FileRouteTypes {
     | '/'
     | '/apps'
     | '/auth'
+    | '/blog'
     | '/community'
     | '/console-games'
     | '/random'
@@ -270,6 +281,7 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/apps'
     | '/auth'
+    | '/blog'
     | '/community'
     | '/console-games'
     | '/random'
@@ -295,6 +307,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AppsRoute: typeof AppsRoute
   AuthRoute: typeof AuthRoute
+  BlogRoute: typeof BlogRoute
   CommunityRoute: typeof CommunityRouteWithChildren
   ConsoleGamesRoute: typeof ConsoleGamesRoute
   RandomRoute: typeof RandomRoute
@@ -340,6 +353,13 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -520,6 +540,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AppsRoute: AppsRoute,
   AuthRoute: AuthRoute,
+  BlogRoute: BlogRoute,
   CommunityRoute: CommunityRouteWithChildren,
   ConsoleGamesRoute: ConsoleGamesRoute,
   RandomRoute: RandomRoute,
