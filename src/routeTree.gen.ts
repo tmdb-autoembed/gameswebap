@@ -18,7 +18,9 @@ import { Route as AppsRouteImport } from './routes/apps'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GamesIndexRouteImport } from './routes/games.index'
+import { Route as ProfileUsernameRouteImport } from './routes/profile.$username'
 import { Route as GamesSlugRouteImport } from './routes/games.$slug'
+import { Route as CommunityPostIdRouteImport } from './routes/community.$postId'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
@@ -71,10 +73,20 @@ const GamesIndexRoute = GamesIndexRouteImport.update({
   path: '/games/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileUsernameRoute = ProfileUsernameRouteImport.update({
+  id: '/profile/$username',
+  path: '/profile/$username',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GamesSlugRoute = GamesSlugRouteImport.update({
   id: '/games/$slug',
   path: '/games/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityPostIdRoute = CommunityPostIdRouteImport.update({
+  id: '/$postId',
+  path: '/$postId',
+  getParentRoute: () => CommunityRoute,
 } as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/admin',
@@ -120,12 +132,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRoute
+  '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
   '/software': typeof SoftwareRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/community/$postId': typeof CommunityPostIdRoute
   '/games/$slug': typeof GamesSlugRoute
+  '/profile/$username': typeof ProfileUsernameRoute
   '/games/': typeof GamesIndexRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
@@ -138,11 +152,13 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRoute
+  '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
   '/software': typeof SoftwareRoute
+  '/community/$postId': typeof CommunityPostIdRoute
   '/games/$slug': typeof GamesSlugRoute
+  '/profile/$username': typeof ProfileUsernameRoute
   '/games': typeof GamesIndexRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
@@ -157,12 +173,14 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRoute
+  '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
   '/software': typeof SoftwareRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/community/$postId': typeof CommunityPostIdRoute
   '/games/$slug': typeof GamesSlugRoute
+  '/profile/$username': typeof ProfileUsernameRoute
   '/games/': typeof GamesIndexRoute
   '/_authenticated/admin/import': typeof AuthenticatedAdminImportRoute
   '/_authenticated/admin/menu': typeof AuthenticatedAdminMenuRoute
@@ -182,7 +200,9 @@ export interface FileRouteTypes {
     | '/random'
     | '/software'
     | '/admin'
+    | '/community/$postId'
     | '/games/$slug'
+    | '/profile/$username'
     | '/games/'
     | '/admin/import'
     | '/admin/menu'
@@ -199,7 +219,9 @@ export interface FileRouteTypes {
     | '/console-games'
     | '/random'
     | '/software'
+    | '/community/$postId'
     | '/games/$slug'
+    | '/profile/$username'
     | '/games'
     | '/admin/import'
     | '/admin/menu'
@@ -218,7 +240,9 @@ export interface FileRouteTypes {
     | '/random'
     | '/software'
     | '/_authenticated/admin'
+    | '/community/$postId'
     | '/games/$slug'
+    | '/profile/$username'
     | '/games/'
     | '/_authenticated/admin/import'
     | '/_authenticated/admin/menu'
@@ -233,11 +257,12 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AppsRoute: typeof AppsRoute
   AuthRoute: typeof AuthRoute
-  CommunityRoute: typeof CommunityRoute
+  CommunityRoute: typeof CommunityRouteWithChildren
   ConsoleGamesRoute: typeof ConsoleGamesRoute
   RandomRoute: typeof RandomRoute
   SoftwareRoute: typeof SoftwareRoute
   GamesSlugRoute: typeof GamesSlugRoute
+  ProfileUsernameRoute: typeof ProfileUsernameRoute
   GamesIndexRoute: typeof GamesIndexRoute
 }
 
@@ -306,12 +331,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GamesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile/$username': {
+      id: '/profile/$username'
+      path: '/profile/$username'
+      fullPath: '/profile/$username'
+      preLoaderRoute: typeof ProfileUsernameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/games/$slug': {
       id: '/games/$slug'
       path: '/games/$slug'
       fullPath: '/games/$slug'
       preLoaderRoute: typeof GamesSlugRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/community/$postId': {
+      id: '/community/$postId'
+      path: '/$postId'
+      fullPath: '/community/$postId'
+      preLoaderRoute: typeof CommunityPostIdRouteImport
+      parentRoute: typeof CommunityRoute
     }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
@@ -400,18 +439,41 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface CommunityRouteChildren {
+  CommunityPostIdRoute: typeof CommunityPostIdRoute
+}
+
+const CommunityRouteChildren: CommunityRouteChildren = {
+  CommunityPostIdRoute: CommunityPostIdRoute,
+}
+
+const CommunityRouteWithChildren = CommunityRoute._addFileChildren(
+  CommunityRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AppsRoute: AppsRoute,
   AuthRoute: AuthRoute,
-  CommunityRoute: CommunityRoute,
+  CommunityRoute: CommunityRouteWithChildren,
   ConsoleGamesRoute: ConsoleGamesRoute,
   RandomRoute: RandomRoute,
   SoftwareRoute: SoftwareRoute,
   GamesSlugRoute: GamesSlugRoute,
+  ProfileUsernameRoute: ProfileUsernameRoute,
   GamesIndexRoute: GamesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
