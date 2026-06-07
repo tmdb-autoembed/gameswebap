@@ -10,26 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SoftwareRouteImport } from './routes/software'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as RequestGameRouteImport } from './routes/request-game'
 import { Route as RandomRouteImport } from './routes/random'
 import { Route as ConsoleGamesRouteImport } from './routes/console-games'
 import { Route as CommunityRouteImport } from './routes/community'
+import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppsRouteImport } from './routes/apps'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GamesIndexRouteImport } from './routes/games.index'
+import { Route as ProfileUsernameRouteImport } from './routes/profile.$username'
+import { Route as PageSlugRouteImport } from './routes/page.$slug'
 import { Route as GamesSlugRouteImport } from './routes/games.$slug'
+import { Route as CommunityPostIdRouteImport } from './routes/community.$postId'
 import { Route as AuthenticatedAdminRouteRouteImport } from './routes/_authenticated/admin/route'
+import { Route as AuthenticatedMessagesIndexRouteImport } from './routes/_authenticated/messages/index'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin/index'
+import { Route as AuthenticatedMessagesPeerIdRouteImport } from './routes/_authenticated/messages/$peerId'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin/users'
 import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin/settings'
+import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin/reviews'
+import { Route as AuthenticatedAdminRequestsRouteImport } from './routes/_authenticated/admin/requests'
+import { Route as AuthenticatedAdminReportsRouteImport } from './routes/_authenticated/admin/reports'
+import { Route as AuthenticatedAdminPagesRouteImport } from './routes/_authenticated/admin/pages'
 import { Route as AuthenticatedAdminMenuRouteImport } from './routes/_authenticated/admin/menu'
 import { Route as AuthenticatedAdminImportRouteImport } from './routes/_authenticated/admin/import'
+import { Route as AuthenticatedAdminCommunityRouteImport } from './routes/_authenticated/admin/community'
+import { Route as AuthenticatedAdminCommentsRouteImport } from './routes/_authenticated/admin/comments'
+import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin/categories'
+import { Route as AuthenticatedAdminAssetsRouteImport } from './routes/_authenticated/admin/assets'
 import { Route as AuthenticatedAdminPostsIndexRouteImport } from './routes/_authenticated/admin/posts/index'
 import { Route as AuthenticatedAdminPostsIdRouteImport } from './routes/_authenticated/admin/posts/$id'
 
 const SoftwareRoute = SoftwareRouteImport.update({
   id: '/software',
   path: '/software',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RequestGameRoute = RequestGameRouteImport.update({
+  id: '/request-game',
+  path: '/request-game',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RandomRoute = RandomRouteImport.update({
@@ -45,6 +72,11 @@ const ConsoleGamesRoute = ConsoleGamesRouteImport.update({
 const CommunityRoute = CommunityRouteImport.update({
   id: '/community',
   path: '/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -71,19 +103,51 @@ const GamesIndexRoute = GamesIndexRouteImport.update({
   path: '/games/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileUsernameRoute = ProfileUsernameRouteImport.update({
+  id: '/profile/$username',
+  path: '/profile/$username',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PageSlugRoute = PageSlugRouteImport.update({
+  id: '/page/$slug',
+  path: '/page/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GamesSlugRoute = GamesSlugRouteImport.update({
   id: '/games/$slug',
   path: '/games/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityPostIdRoute = CommunityPostIdRouteImport.update({
+  id: '/$postId',
+  path: '/$postId',
+  getParentRoute: () => CommunityRoute,
 } as any)
 const AuthenticatedAdminRouteRoute = AuthenticatedAdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedMessagesIndexRoute =
+  AuthenticatedMessagesIndexRouteImport.update({
+    id: '/messages/',
+    path: '/messages/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
+const AuthenticatedMessagesPeerIdRoute =
+  AuthenticatedMessagesPeerIdRouteImport.update({
+    id: '/messages/$peerId',
+    path: '/messages/$peerId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
   getParentRoute: () => AuthenticatedAdminRouteRoute,
 } as any)
 const AuthenticatedAdminSettingsRoute =
@@ -92,6 +156,29 @@ const AuthenticatedAdminSettingsRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminReviewsRoute =
+  AuthenticatedAdminReviewsRouteImport.update({
+    id: '/reviews',
+    path: '/reviews',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminRequestsRoute =
+  AuthenticatedAdminRequestsRouteImport.update({
+    id: '/requests',
+    path: '/requests',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminReportsRoute =
+  AuthenticatedAdminReportsRouteImport.update({
+    id: '/reports',
+    path: '/reports',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminPagesRoute = AuthenticatedAdminPagesRouteImport.update({
+  id: '/pages',
+  path: '/pages',
+  getParentRoute: () => AuthenticatedAdminRouteRoute,
+} as any)
 const AuthenticatedAdminMenuRoute = AuthenticatedAdminMenuRouteImport.update({
   id: '/menu',
   path: '/menu',
@@ -101,6 +188,30 @@ const AuthenticatedAdminImportRoute =
   AuthenticatedAdminImportRouteImport.update({
     id: '/import',
     path: '/import',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminCommunityRoute =
+  AuthenticatedAdminCommunityRouteImport.update({
+    id: '/community',
+    path: '/community',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminCommentsRoute =
+  AuthenticatedAdminCommentsRouteImport.update({
+    id: '/comments',
+    path: '/comments',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminCategoriesRoute =
+  AuthenticatedAdminCategoriesRouteImport.update({
+    id: '/categories',
+    path: '/categories',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
+const AuthenticatedAdminAssetsRoute =
+  AuthenticatedAdminAssetsRouteImport.update({
+    id: '/assets',
+    path: '/assets',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
 const AuthenticatedAdminPostsIndexRoute =
@@ -120,17 +231,34 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRoute
+  '/blog': typeof BlogRoute
+  '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
+  '/request-game': typeof RequestGameRoute
+  '/search': typeof SearchRoute
   '/software': typeof SoftwareRoute
   '/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/community/$postId': typeof CommunityPostIdRoute
   '/games/$slug': typeof GamesSlugRoute
+  '/page/$slug': typeof PageSlugRoute
+  '/profile/$username': typeof ProfileUsernameRoute
   '/games/': typeof GamesIndexRoute
+  '/admin/assets': typeof AuthenticatedAdminAssetsRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/comments': typeof AuthenticatedAdminCommentsRoute
+  '/admin/community': typeof AuthenticatedAdminCommunityRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
+  '/admin/pages': typeof AuthenticatedAdminPagesRoute
+  '/admin/reports': typeof AuthenticatedAdminReportsRoute
+  '/admin/requests': typeof AuthenticatedAdminRequestsRoute
+  '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/messages/$peerId': typeof AuthenticatedMessagesPeerIdRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/messages/': typeof AuthenticatedMessagesIndexRoute
   '/admin/posts/$id': typeof AuthenticatedAdminPostsIdRoute
   '/admin/posts/': typeof AuthenticatedAdminPostsIndexRoute
 }
@@ -138,16 +266,33 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRoute
+  '/blog': typeof BlogRoute
+  '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
+  '/request-game': typeof RequestGameRoute
+  '/search': typeof SearchRoute
   '/software': typeof SoftwareRoute
+  '/community/$postId': typeof CommunityPostIdRoute
   '/games/$slug': typeof GamesSlugRoute
+  '/page/$slug': typeof PageSlugRoute
+  '/profile/$username': typeof ProfileUsernameRoute
   '/games': typeof GamesIndexRoute
+  '/admin/assets': typeof AuthenticatedAdminAssetsRoute
+  '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/admin/comments': typeof AuthenticatedAdminCommentsRoute
+  '/admin/community': typeof AuthenticatedAdminCommunityRoute
   '/admin/import': typeof AuthenticatedAdminImportRoute
   '/admin/menu': typeof AuthenticatedAdminMenuRoute
+  '/admin/pages': typeof AuthenticatedAdminPagesRoute
+  '/admin/reports': typeof AuthenticatedAdminReportsRoute
+  '/admin/requests': typeof AuthenticatedAdminRequestsRoute
+  '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/messages/$peerId': typeof AuthenticatedMessagesPeerIdRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
+  '/messages': typeof AuthenticatedMessagesIndexRoute
   '/admin/posts/$id': typeof AuthenticatedAdminPostsIdRoute
   '/admin/posts': typeof AuthenticatedAdminPostsIndexRoute
 }
@@ -157,17 +302,34 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/apps': typeof AppsRoute
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRoute
+  '/blog': typeof BlogRoute
+  '/community': typeof CommunityRouteWithChildren
   '/console-games': typeof ConsoleGamesRoute
   '/random': typeof RandomRoute
+  '/request-game': typeof RequestGameRoute
+  '/search': typeof SearchRoute
   '/software': typeof SoftwareRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteRouteWithChildren
+  '/community/$postId': typeof CommunityPostIdRoute
   '/games/$slug': typeof GamesSlugRoute
+  '/page/$slug': typeof PageSlugRoute
+  '/profile/$username': typeof ProfileUsernameRoute
   '/games/': typeof GamesIndexRoute
+  '/_authenticated/admin/assets': typeof AuthenticatedAdminAssetsRoute
+  '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
+  '/_authenticated/admin/comments': typeof AuthenticatedAdminCommentsRoute
+  '/_authenticated/admin/community': typeof AuthenticatedAdminCommunityRoute
   '/_authenticated/admin/import': typeof AuthenticatedAdminImportRoute
   '/_authenticated/admin/menu': typeof AuthenticatedAdminMenuRoute
+  '/_authenticated/admin/pages': typeof AuthenticatedAdminPagesRoute
+  '/_authenticated/admin/reports': typeof AuthenticatedAdminReportsRoute
+  '/_authenticated/admin/requests': typeof AuthenticatedAdminRequestsRoute
+  '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
   '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/messages/$peerId': typeof AuthenticatedMessagesPeerIdRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/messages/': typeof AuthenticatedMessagesIndexRoute
   '/_authenticated/admin/posts/$id': typeof AuthenticatedAdminPostsIdRoute
   '/_authenticated/admin/posts/': typeof AuthenticatedAdminPostsIndexRoute
 }
@@ -177,17 +339,34 @@ export interface FileRouteTypes {
     | '/'
     | '/apps'
     | '/auth'
+    | '/blog'
     | '/community'
     | '/console-games'
     | '/random'
+    | '/request-game'
+    | '/search'
     | '/software'
     | '/admin'
+    | '/community/$postId'
     | '/games/$slug'
+    | '/page/$slug'
+    | '/profile/$username'
     | '/games/'
+    | '/admin/assets'
+    | '/admin/categories'
+    | '/admin/comments'
+    | '/admin/community'
     | '/admin/import'
     | '/admin/menu'
+    | '/admin/pages'
+    | '/admin/reports'
+    | '/admin/requests'
+    | '/admin/reviews'
     | '/admin/settings'
+    | '/admin/users'
+    | '/messages/$peerId'
     | '/admin/'
+    | '/messages/'
     | '/admin/posts/$id'
     | '/admin/posts/'
   fileRoutesByTo: FileRoutesByTo
@@ -195,16 +374,33 @@ export interface FileRouteTypes {
     | '/'
     | '/apps'
     | '/auth'
+    | '/blog'
     | '/community'
     | '/console-games'
     | '/random'
+    | '/request-game'
+    | '/search'
     | '/software'
+    | '/community/$postId'
     | '/games/$slug'
+    | '/page/$slug'
+    | '/profile/$username'
     | '/games'
+    | '/admin/assets'
+    | '/admin/categories'
+    | '/admin/comments'
+    | '/admin/community'
     | '/admin/import'
     | '/admin/menu'
+    | '/admin/pages'
+    | '/admin/reports'
+    | '/admin/requests'
+    | '/admin/reviews'
     | '/admin/settings'
+    | '/admin/users'
+    | '/messages/$peerId'
     | '/admin'
+    | '/messages'
     | '/admin/posts/$id'
     | '/admin/posts'
   id:
@@ -213,17 +409,34 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/apps'
     | '/auth'
+    | '/blog'
     | '/community'
     | '/console-games'
     | '/random'
+    | '/request-game'
+    | '/search'
     | '/software'
     | '/_authenticated/admin'
+    | '/community/$postId'
     | '/games/$slug'
+    | '/page/$slug'
+    | '/profile/$username'
     | '/games/'
+    | '/_authenticated/admin/assets'
+    | '/_authenticated/admin/categories'
+    | '/_authenticated/admin/comments'
+    | '/_authenticated/admin/community'
     | '/_authenticated/admin/import'
     | '/_authenticated/admin/menu'
+    | '/_authenticated/admin/pages'
+    | '/_authenticated/admin/reports'
+    | '/_authenticated/admin/requests'
+    | '/_authenticated/admin/reviews'
     | '/_authenticated/admin/settings'
+    | '/_authenticated/admin/users'
+    | '/_authenticated/messages/$peerId'
     | '/_authenticated/admin/'
+    | '/_authenticated/messages/'
     | '/_authenticated/admin/posts/$id'
     | '/_authenticated/admin/posts/'
   fileRoutesById: FileRoutesById
@@ -233,11 +446,16 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AppsRoute: typeof AppsRoute
   AuthRoute: typeof AuthRoute
-  CommunityRoute: typeof CommunityRoute
+  BlogRoute: typeof BlogRoute
+  CommunityRoute: typeof CommunityRouteWithChildren
   ConsoleGamesRoute: typeof ConsoleGamesRoute
   RandomRoute: typeof RandomRoute
+  RequestGameRoute: typeof RequestGameRoute
+  SearchRoute: typeof SearchRoute
   SoftwareRoute: typeof SoftwareRoute
   GamesSlugRoute: typeof GamesSlugRoute
+  PageSlugRoute: typeof PageSlugRoute
+  ProfileUsernameRoute: typeof ProfileUsernameRoute
   GamesIndexRoute: typeof GamesIndexRoute
 }
 
@@ -248,6 +466,20 @@ declare module '@tanstack/react-router' {
       path: '/software'
       fullPath: '/software'
       preLoaderRoute: typeof SoftwareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/request-game': {
+      id: '/request-game'
+      path: '/request-game'
+      fullPath: '/request-game'
+      preLoaderRoute: typeof RequestGameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/random': {
@@ -269,6 +501,13 @@ declare module '@tanstack/react-router' {
       path: '/community'
       fullPath: '/community'
       preLoaderRoute: typeof CommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -306,6 +545,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GamesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile/$username': {
+      id: '/profile/$username'
+      path: '/profile/$username'
+      fullPath: '/profile/$username'
+      preLoaderRoute: typeof ProfileUsernameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/page/$slug': {
+      id: '/page/$slug'
+      path: '/page/$slug'
+      fullPath: '/page/$slug'
+      preLoaderRoute: typeof PageSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/games/$slug': {
       id: '/games/$slug'
       path: '/games/$slug'
@@ -313,11 +566,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GamesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/community/$postId': {
+      id: '/community/$postId'
+      path: '/$postId'
+      fullPath: '/community/$postId'
+      preLoaderRoute: typeof CommunityPostIdRouteImport
+      parentRoute: typeof CommunityRoute
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/messages/': {
+      id: '/_authenticated/messages/'
+      path: '/messages'
+      fullPath: '/messages/'
+      preLoaderRoute: typeof AuthenticatedMessagesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/': {
@@ -327,11 +594,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/messages/$peerId': {
+      id: '/_authenticated/messages/$peerId'
+      path: '/messages/$peerId'
+      fullPath: '/messages/$peerId'
+      preLoaderRoute: typeof AuthenticatedMessagesPeerIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/settings': {
       id: '/_authenticated/admin/settings'
       path: '/settings'
       fullPath: '/admin/settings'
       preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/reviews': {
+      id: '/_authenticated/admin/reviews'
+      path: '/reviews'
+      fullPath: '/admin/reviews'
+      preLoaderRoute: typeof AuthenticatedAdminReviewsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/requests': {
+      id: '/_authenticated/admin/requests'
+      path: '/requests'
+      fullPath: '/admin/requests'
+      preLoaderRoute: typeof AuthenticatedAdminRequestsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/reports': {
+      id: '/_authenticated/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AuthenticatedAdminReportsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/pages': {
+      id: '/_authenticated/admin/pages'
+      path: '/pages'
+      fullPath: '/admin/pages'
+      preLoaderRoute: typeof AuthenticatedAdminPagesRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/menu': {
@@ -346,6 +655,34 @@ declare module '@tanstack/react-router' {
       path: '/import'
       fullPath: '/admin/import'
       preLoaderRoute: typeof AuthenticatedAdminImportRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/community': {
+      id: '/_authenticated/admin/community'
+      path: '/community'
+      fullPath: '/admin/community'
+      preLoaderRoute: typeof AuthenticatedAdminCommunityRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/comments': {
+      id: '/_authenticated/admin/comments'
+      path: '/comments'
+      fullPath: '/admin/comments'
+      preLoaderRoute: typeof AuthenticatedAdminCommentsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/categories': {
+      id: '/_authenticated/admin/categories'
+      path: '/categories'
+      fullPath: '/admin/categories'
+      preLoaderRoute: typeof AuthenticatedAdminCategoriesRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
+    '/_authenticated/admin/assets': {
+      id: '/_authenticated/admin/assets'
+      path: '/assets'
+      fullPath: '/admin/assets'
+      preLoaderRoute: typeof AuthenticatedAdminAssetsRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
     '/_authenticated/admin/posts/': {
@@ -366,9 +703,18 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminAssetsRoute: typeof AuthenticatedAdminAssetsRoute
+  AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
+  AuthenticatedAdminCommentsRoute: typeof AuthenticatedAdminCommentsRoute
+  AuthenticatedAdminCommunityRoute: typeof AuthenticatedAdminCommunityRoute
   AuthenticatedAdminImportRoute: typeof AuthenticatedAdminImportRoute
   AuthenticatedAdminMenuRoute: typeof AuthenticatedAdminMenuRoute
+  AuthenticatedAdminPagesRoute: typeof AuthenticatedAdminPagesRoute
+  AuthenticatedAdminReportsRoute: typeof AuthenticatedAdminReportsRoute
+  AuthenticatedAdminRequestsRoute: typeof AuthenticatedAdminRequestsRoute
+  AuthenticatedAdminReviewsRoute: typeof AuthenticatedAdminReviewsRoute
   AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedAdminPostsIdRoute: typeof AuthenticatedAdminPostsIdRoute
   AuthenticatedAdminPostsIndexRoute: typeof AuthenticatedAdminPostsIndexRoute
@@ -376,9 +722,18 @@ interface AuthenticatedAdminRouteRouteChildren {
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
+    AuthenticatedAdminAssetsRoute: AuthenticatedAdminAssetsRoute,
+    AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
+    AuthenticatedAdminCommentsRoute: AuthenticatedAdminCommentsRoute,
+    AuthenticatedAdminCommunityRoute: AuthenticatedAdminCommunityRoute,
     AuthenticatedAdminImportRoute: AuthenticatedAdminImportRoute,
     AuthenticatedAdminMenuRoute: AuthenticatedAdminMenuRoute,
+    AuthenticatedAdminPagesRoute: AuthenticatedAdminPagesRoute,
+    AuthenticatedAdminReportsRoute: AuthenticatedAdminReportsRoute,
+    AuthenticatedAdminRequestsRoute: AuthenticatedAdminRequestsRoute,
+    AuthenticatedAdminReviewsRoute: AuthenticatedAdminReviewsRoute,
     AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
+    AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
     AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
     AuthenticatedAdminPostsIdRoute: AuthenticatedAdminPostsIdRoute,
     AuthenticatedAdminPostsIndexRoute: AuthenticatedAdminPostsIndexRoute,
@@ -391,37 +746,48 @@ const AuthenticatedAdminRouteRouteWithChildren =
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRouteRoute: typeof AuthenticatedAdminRouteRouteWithChildren
+  AuthenticatedMessagesPeerIdRoute: typeof AuthenticatedMessagesPeerIdRoute
+  AuthenticatedMessagesIndexRoute: typeof AuthenticatedMessagesIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRouteRoute: AuthenticatedAdminRouteRouteWithChildren,
+  AuthenticatedMessagesPeerIdRoute: AuthenticatedMessagesPeerIdRoute,
+  AuthenticatedMessagesIndexRoute: AuthenticatedMessagesIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
+interface CommunityRouteChildren {
+  CommunityPostIdRoute: typeof CommunityPostIdRoute
+}
+
+const CommunityRouteChildren: CommunityRouteChildren = {
+  CommunityPostIdRoute: CommunityPostIdRoute,
+}
+
+const CommunityRouteWithChildren = CommunityRoute._addFileChildren(
+  CommunityRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AppsRoute: AppsRoute,
   AuthRoute: AuthRoute,
-  CommunityRoute: CommunityRoute,
+  BlogRoute: BlogRoute,
+  CommunityRoute: CommunityRouteWithChildren,
   ConsoleGamesRoute: ConsoleGamesRoute,
   RandomRoute: RandomRoute,
+  RequestGameRoute: RequestGameRoute,
+  SearchRoute: SearchRoute,
   SoftwareRoute: SoftwareRoute,
   GamesSlugRoute: GamesSlugRoute,
+  PageSlugRoute: PageSlugRoute,
+  ProfileUsernameRoute: ProfileUsernameRoute,
   GamesIndexRoute: GamesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
