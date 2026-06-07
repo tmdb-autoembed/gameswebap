@@ -40,6 +40,7 @@ import { Route as AuthenticatedAdminImportRouteImport } from './routes/_authenti
 import { Route as AuthenticatedAdminCommunityRouteImport } from './routes/_authenticated/admin/community'
 import { Route as AuthenticatedAdminCommentsRouteImport } from './routes/_authenticated/admin/comments'
 import { Route as AuthenticatedAdminCategoriesRouteImport } from './routes/_authenticated/admin/categories'
+import { Route as AuthenticatedAdminAssetsRouteImport } from './routes/_authenticated/admin/assets'
 import { Route as AuthenticatedAdminPostsIndexRouteImport } from './routes/_authenticated/admin/posts/index'
 import { Route as AuthenticatedAdminPostsIdRouteImport } from './routes/_authenticated/admin/posts/$id'
 
@@ -207,6 +208,12 @@ const AuthenticatedAdminCategoriesRoute =
     path: '/categories',
     getParentRoute: () => AuthenticatedAdminRouteRoute,
   } as any)
+const AuthenticatedAdminAssetsRoute =
+  AuthenticatedAdminAssetsRouteImport.update({
+    id: '/assets',
+    path: '/assets',
+    getParentRoute: () => AuthenticatedAdminRouteRoute,
+  } as any)
 const AuthenticatedAdminPostsIndexRoute =
   AuthenticatedAdminPostsIndexRouteImport.update({
     id: '/posts/',
@@ -237,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/page/$slug': typeof PageSlugRoute
   '/profile/$username': typeof ProfileUsernameRoute
   '/games/': typeof GamesIndexRoute
+  '/admin/assets': typeof AuthenticatedAdminAssetsRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/admin/community': typeof AuthenticatedAdminCommunityRoute
@@ -270,6 +278,7 @@ export interface FileRoutesByTo {
   '/page/$slug': typeof PageSlugRoute
   '/profile/$username': typeof ProfileUsernameRoute
   '/games': typeof GamesIndexRoute
+  '/admin/assets': typeof AuthenticatedAdminAssetsRoute
   '/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/admin/community': typeof AuthenticatedAdminCommunityRoute
@@ -306,6 +315,7 @@ export interface FileRoutesById {
   '/page/$slug': typeof PageSlugRoute
   '/profile/$username': typeof ProfileUsernameRoute
   '/games/': typeof GamesIndexRoute
+  '/_authenticated/admin/assets': typeof AuthenticatedAdminAssetsRoute
   '/_authenticated/admin/categories': typeof AuthenticatedAdminCategoriesRoute
   '/_authenticated/admin/comments': typeof AuthenticatedAdminCommentsRoute
   '/_authenticated/admin/community': typeof AuthenticatedAdminCommunityRoute
@@ -342,6 +352,7 @@ export interface FileRouteTypes {
     | '/page/$slug'
     | '/profile/$username'
     | '/games/'
+    | '/admin/assets'
     | '/admin/categories'
     | '/admin/comments'
     | '/admin/community'
@@ -375,6 +386,7 @@ export interface FileRouteTypes {
     | '/page/$slug'
     | '/profile/$username'
     | '/games'
+    | '/admin/assets'
     | '/admin/categories'
     | '/admin/comments'
     | '/admin/community'
@@ -410,6 +422,7 @@ export interface FileRouteTypes {
     | '/page/$slug'
     | '/profile/$username'
     | '/games/'
+    | '/_authenticated/admin/assets'
     | '/_authenticated/admin/categories'
     | '/_authenticated/admin/comments'
     | '/_authenticated/admin/community'
@@ -665,6 +678,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminCategoriesRouteImport
       parentRoute: typeof AuthenticatedAdminRouteRoute
     }
+    '/_authenticated/admin/assets': {
+      id: '/_authenticated/admin/assets'
+      path: '/assets'
+      fullPath: '/admin/assets'
+      preLoaderRoute: typeof AuthenticatedAdminAssetsRouteImport
+      parentRoute: typeof AuthenticatedAdminRouteRoute
+    }
     '/_authenticated/admin/posts/': {
       id: '/_authenticated/admin/posts/'
       path: '/posts'
@@ -683,6 +703,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedAdminRouteRouteChildren {
+  AuthenticatedAdminAssetsRoute: typeof AuthenticatedAdminAssetsRoute
   AuthenticatedAdminCategoriesRoute: typeof AuthenticatedAdminCategoriesRoute
   AuthenticatedAdminCommentsRoute: typeof AuthenticatedAdminCommentsRoute
   AuthenticatedAdminCommunityRoute: typeof AuthenticatedAdminCommunityRoute
@@ -701,6 +722,7 @@ interface AuthenticatedAdminRouteRouteChildren {
 
 const AuthenticatedAdminRouteRouteChildren: AuthenticatedAdminRouteRouteChildren =
   {
+    AuthenticatedAdminAssetsRoute: AuthenticatedAdminAssetsRoute,
     AuthenticatedAdminCategoriesRoute: AuthenticatedAdminCategoriesRoute,
     AuthenticatedAdminCommentsRoute: AuthenticatedAdminCommentsRoute,
     AuthenticatedAdminCommunityRoute: AuthenticatedAdminCommunityRoute,
