@@ -98,7 +98,8 @@ export function FeedCard({ post, currentUserId }: { post: any; currentUserId: st
       )}
 
       <footer className="flex items-center gap-1 px-2 py-2 border-t border-border/40">
-        <ReactionBar reactions={post.reactions ?? {}} likes={post.likes} active={active} onPick={(t) => { setActive(active === t ? null : t); react.mutate(active === t ? null : t); }} disabled={!currentUserId} />
+        <ReactionBar reactions={post.reactions ?? {}} likes={post.likes} active={active} onPick={(t: string | null) => { setActive(active === t ? null : t); react.mutate(active === t ? null : t); }} disabled={!currentUserId} />
+
         <Link to="/community/$postId" params={{ postId: post.id }} className="flex items-center gap-1.5 px-3 h-9 rounded-full text-sm text-foreground/80 hover:bg-secondary">
           <MessageCircle size={16} /> {post.comments_count ?? 0}
         </Link>
