@@ -35,7 +35,7 @@ function Pages() {
           </div>
         ))}
       </div>
-      {edit && <Editor item={edit} onClose={() => setEdit(null)} onSave={(d) => save.mutate(d)} />}
+      {edit && <Editor item={edit} onClose={() => setEdit(null)} onSave={(d: any) => save.mutate(d)} />}
     </div>
   );
 }
