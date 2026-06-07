@@ -165,7 +165,7 @@ export const addComment = createServerFn({ method: "POST" })
     });
     if (error) throw new Error(error.message);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    await supabaseAdmin.rpc("bump_community_counter", { _post: data.postId, _col: "comments_count", _delta: 1 } as any).then(() => {}).catch(() => {});
+    try { await supabaseAdmin.rpc("bump_community_counter" as any, { _post: data.postId, _col: "comments_count", _delta: 1 }); } catch {}
     return { ok: true };
   });
 
