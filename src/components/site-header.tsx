@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Search, Sun, Moon, Menu, Users, Gamepad2, Dice5, X, ArrowUp, TrendingUp, LayoutGrid, Smartphone, Lock, Heart, MessageSquare, Circle, LogIn, Shield } from "lucide-react";
+import { Search, Sun, Moon, Menu, Users, Gamepad2, Dice5, X, ArrowUp, TrendingUp, LayoutGrid, Smartphone, Lock, Heart, MessageSquare, Circle, LogIn, Shield, User, BookOpen, Sparkles, MessageCircle } from "lucide-react";
+
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
