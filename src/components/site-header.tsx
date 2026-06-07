@@ -78,15 +78,31 @@ export function SiteHeader() {
           <button onClick={toggle} className="h-9 w-9 flex items-center justify-center rounded-full bg-secondary text-foreground/80" aria-label="Toggle theme">
             {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
           </button>
+          {authed && (
+            <Link to="/messages" className="h-9 w-9 hidden sm:flex items-center justify-center rounded-full bg-secondary text-foreground/80" aria-label="Messages">
+              <MessageCircle size={16} />
+            </Link>
+          )}
           {roleData?.isAdmin ? (
             <Link to="/admin" className="h-9 w-9 flex items-center justify-center rounded-full bg-secondary text-foreground/80" aria-label="Admin">
               <Shield size={16} />
             </Link>
-          ) : !authed ? (
+          ) : null}
+          {!authed ? (
             <Link to="/auth" className="h-9 w-9 flex items-center justify-center rounded-full bg-secondary text-foreground/80" aria-label="Sign in">
               <LogIn size={16} />
             </Link>
-          ) : null}
+          ) : (
+            <Link to="/profile/$username" params={{ username: "me" }} onClick={async (e) => {
+              e.preventDefault();
+              const { data } = await supabase.auth.getUser();
+              const { data: prof } = await supabase.from("community_profiles").select("username").eq("user_id", data.user!.id).maybeSingle();
+              if (prof?.username) navigate({ to: "/profile/$username", params: { username: prof.username } });
+            }} className="h-9 w-9 flex items-center justify-center rounded-full gradient-purple-pink text-white" aria-label="Profile">
+              <User size={16} />
+            </Link>
+          )}
+
         </div>
       </div>
 
