@@ -2,9 +2,10 @@ import { Link } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { reactToPost, deleteCommunityPost } from "@/lib/community.functions";
-import { Heart, MessageCircle, Share2, MoreHorizontal, MapPin, Smile, Trash2, BarChart3, Gamepad2 } from "lucide-react";
+import { Heart, MessageCircle, Share2, MoreHorizontal, MapPin, Smile, Trash2, Gamepad2, ThumbsUp, Laugh, Eye, Frown, Angry } from "lucide-react";
 import { useState } from "react";
 import { PollBlock } from "./poll-block";
+
 
 export function FeedCard({ post, currentUserId }: { post: any; currentUserId: string | null }) {
   const qc = useQueryClient();
