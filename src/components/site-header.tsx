@@ -144,22 +144,10 @@ export function SiteHeader() {
         </div>
       )}
 
-      <nav className="md:hidden fixed left-4 right-4 bottom-4 z-[70] h-20 rounded-[1.6rem] border border-white/10 bg-background/88 backdrop-blur-2xl shadow-[0_22px_80px_-34px_rgba(0,0,0,0.9)] flex items-center justify-around">
-        <Link to="/" className="mobile-dock-active" aria-label="Home"><Home size={26} /></Link>
-        <Link to="/games" className="mobile-dock-item" aria-label="Games"><Tv size={25} /></Link>
-        <button onClick={() => setSearchOpen(true)} className="mobile-dock-create" aria-label="Create or search"><Plus size={28} /></button>
-        <button onClick={() => setSearchOpen(true)} className="mobile-dock-item" aria-label="Search"><Search size={26} /></button>
-        {authed ? (
-          <Link to="/messages" className="mobile-dock-item" aria-label="Messages"><Bell size={24} /></Link>
-        ) : (
-          <Link to="/auth" className="mobile-dock-item" aria-label="Sign in"><User size={24} /></Link>
-        )}
-      </nav>
-
       {open && (
-        <div className="fixed inset-0 z-[60] lg:hidden">
+        <div className="fixed inset-0 z-[900] lg:hidden">
           <div className="absolute inset-0 bg-black/60" onClick={() => setOpen(false)} />
-          <aside className="absolute left-0 top-0 bottom-0 w-[88%] max-w-sm bg-background border-r border-border/40 overflow-y-auto">
+          <aside className="absolute left-0 top-0 bottom-0 w-[88%] max-w-sm bg-background border-r border-border/40 overflow-y-auto z-[910]">
             <div className="px-5 py-5 flex items-center justify-between border-b border-border/40">
               <span className="font-display font-black text-xl logo-gradient">CREATIVE CONOR</span>
               <button onClick={() => setOpen(false)} className="text-foreground/70"><X size={22} /></button>

@@ -27,7 +27,11 @@ function PostDetail() {
 
   useEffect(() => { supabase.auth.getUser().then(({ data }) => setMe(data.user?.id ?? null)); }, []);
 
-  const { data, isLoading } = useQuery({ queryKey: ["post", slug], queryFn: () => fn({ data: { slug } }) });
+  const { data, isLoading } = useQuery({
+    queryKey: ["post", slug],
+    queryFn: () => fn({ data: { slug } }),
+    enabled: typeof slug === "string" && slug.length > 0,
+  });
   const p: any = data?.post;
   const { data: rData } = useQuery({ queryKey: ["reviews", p?.id], queryFn: () => revFn({ data: { postId: p.id } }), enabled: !!p });
   const { data: cData } = useQuery({ queryKey: ["game-community", p?.id], queryFn: () => feedFn({ data: { gameId: p.id, limit: 4 } }), enabled: !!p });

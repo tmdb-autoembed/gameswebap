@@ -4,37 +4,6 @@ import { load } from "cheerio";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const PRODUCT_RE = /\/(games|software|apps|console-games|console)\/[^/?#]+\/?$/i;
-const RESERVED_ROOT_PATHS = new Set([
-  "games",
-  "software",
-  "apps",
-  "console-games",
-  "console",
-  "community",
-  "blog",
-  "auth",
-  "search",
-  "random",
-  "request-game",
-  "profile",
-  "page",
-  "admin",
-  "messages",
-  "users",
-  "settings",
-  "reports",
-  "requests",
-  "reviews",
-  "menu",
-  "import",
-  "pages",
-  "assets",
-  "categories",
-  "comments",
-  "docs",
-  "privacy",
-  "terms",
-]);
 
 function slugify(value: string) {
   return value
@@ -43,23 +12,6 @@ function slugify(value: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 190) || "post";
-}
-
-function isProductUrl(url: string) {
-  try {
-    const { pathname } = new URL(url);
-    const segments = pathname.split("/").filter(Boolean);
-    if (segments.length === 0) return false;
-    if (segments.length === 1) {
-      const segment = segments[0].toLowerCase();
-      if (RESERVED_ROOT_PATHS.has(segment)) return false;
-      if (segment.includes(".")) return false;
-      return true;
-    }
-    return PRODUCT_RE.test(pathname);
-  } catch {
-    return false;
-  }
 }
 
 function htmlDecode(value = "") {
@@ -172,73 +124,34 @@ async function loadHtml(url: string) {
 }
 
 export function parseProductHtml(html: string, sourceUrl: string) {
-  const $ = load(html);
+  const title = pick(html, [
+    /<h1[^>]*class="[^"]*(?:product-title|game-title|entry-title)[^"]*"[^>]*>([\s\S]*?)<\/h1>/i,
+    /<h2[^>]*class="[^"]*(?:product-title|game-title|entry-title)[^"]*"[^>]*>([\s\S]*?)<\/h2>/i,
+    /<meta[^>]+property="og:title"[^>]+content="([^"]+)"/i,
+    /<title[^>]*>([\s\S]*?)<\/title>/i,
+    /<h1[^>]*>([\s\S]*?)<\/h1>/i,
+  ])?.replace(/\s*[—|-]\s*CreativeConor.*$/i, "");
 
-  const getText = (selectors: string | string[]) => {
-    const list = Array.isArray(selectors) ? selectors : [selectors];
-    for (const selector of list) {
-      const value = $(selector).first().text().trim();
-      if (value) return htmlDecode(value);
-    }
-    return null;
-  };
-
-  const getAttr = (selectors: string | string[], attr = "src") => {
-    const list = Array.isArray(selectors) ? selectors : [selectors];
-    for (const selector of list) {
-      const el = $(selector).first();
-      const value = el.attr(attr) ?? el.attr("content");
-      if (value) return absoluteUrl(value, sourceUrl);
-    }
-    return null;
-  };
-
-  const title =
-    getText(["h1.product-title", "h1.game-title", "h1.entry-title", "h1"]) ||
-    $("meta[property=\"og:title\"]").attr("content")?.trim() ||
-    $("title").text().trim() ||
-    "";
-
-  const productSubtitle = getText([
-    ".product-subtitle",
-    ".subtitle",
-    ".game-subtitle",
-    "p.lead",
-    "p.excerpt",
+  const productSubtitle = pick(html, [
+    /class="[^"]*(?:product-subtitle|subtitle|game-subtitle)[^"]*"[^>]*>([\s\S]*?)<\//i,
+    /<p[^>]*class="[^"]*(?:lead|excerpt)[^"]*"[^>]*>([\s\S]*?)<\/p>/i,
   ]);
 
-  const cover =
-    getAttr([
-      ".product-cover img",
-      ".game-cover img",
-      ".poster img",
-      ".cover-image",
-      ".product-image img",
-      "img[alt*=\"cover\"]",
-    ]) ||
-    $("meta[property=\"og:image\"]").attr("content") ||
-    null;
+  const cover = pickAttr(html, [
+    /class="[^"]*(?:product-cover|game-cover|poster)[^"]*"[\s\S]*?<img[^>]+src="([^"]+)"/i,
+    /<img[^>]+class="[^"]*(?:product-cover|game-cover|poster|cover-image)[^"]*"[^>]+src="([^"]+)"/i,
+    /<meta[^>]+property="og:image"[^>]+content="([^"]+)"/i,
+  ], sourceUrl);
 
-  const banner =
-    getAttr([
-      ".product-backdrop img",
-      ".backdrop img",
-      ".banner img",
-      ".hero img",
-      "img[alt*=\"banner\"]",
-    ]) ||
-    cover;
+  const banner = pickAttr(html, [
+    /class="[^"]*(?:product-backdrop|backdrop|banner|hero)[^"]*"[\s\S]*?<img[^>]+src="([^"]+)"/i,
+    /<img[^>]+class="[^"]*(?:banner|backdrop|hero-image)[^"]*"[^>]+src="([^"]+)"/i,
+  ], sourceUrl) ?? cover;
 
-  const description =
-    sectionText(html, "Description") ||
-    getText([
-      ".product-description",
-      ".description",
-      ".entry-content",
-      ".post-content",
-    ]) ||
-    $("meta[name=\"description\"]").attr("content") ||
-    null;
+  const description = sectionText(html, "Description") || pick(html, [
+    /class="[^"]*(?:product-description|description|entry-content|post-content)[^"]*"[^>]*>([\s\S]*?)<\/div>/i,
+    /<meta[^>]+name="description"[^>]+content="([^"]+)"/i,
+  ]);
 
   const fullText = strip(html);
   const version = pick(html, [/Version:\s*<[^>]+>\s*([^<\n]+)/i, /\b(v\d+(?:\.\d+){0,3})\b/i]);
@@ -250,31 +163,18 @@ export function parseProductHtml(html: string, sourceUrl: string) {
   const ratingStr = fullText.match(/([0-5](?:\.\d)?)\s*\/\s*5/i)?.[1] ?? null;
   const platform = fullText.match(/\b(PC|Windows|Android|iOS|PlayStation|Xbox|Nintendo)\b/i)?.[1] ?? null;
 
-  const genres = Array.from(
-    $("a[href*='/genre/'], a[href*='/genres/'], a[href*='/category/'], a[href*='/games/']")
-      .toArray()
-      .map((el) => $(el).text().trim())
-      .filter((value) => value && !/download|home|games|software|apps/i.test(value)),
-  ).slice(0, 12);
+  const genres = Array.from(html.matchAll(/<a[^>]+href="[^"]*\/(?:genre|genres|category|games)\/[^\"]+"[^>]*>([\s\S]*?)<\/a>/gi))
+    .map((m) => strip(m[1]))
+    .filter((g) => g && !/download|home|games|software|apps/i.test(g))
+    .slice(0, 12);
 
-  const downloadLinks = Array.from(
-    $("a[href]")
-      .toArray()
-      .map((el) => {
-        const href = $(el).attr("href") ?? "";
-        return {
-          name: strip($(el).text()).replace(/\s+/g, " ").slice(0, 60) || "Download",
-          url: absoluteUrl(href, sourceUrl),
-        };
-      })
-      .filter((item) => item.url),
-  )
-    .filter((item) => /download|fast|direct|mirror/i.test(item.name) || /download|fast|direct|mirror/i.test(item.url))
-    .filter((item) => !item.url.includes("creativeconor.com"));
+  const downloadLinks = Array.from(html.matchAll(/<a[^>]+href="([^"]+)"[^>]*>([\s\S]*?(?:Download|Fast|Direct)[\s\S]*?)<\/a>/gi))
+    .map((m) => ({ name: strip(m[2]).replace(/\s+/g, " ").slice(0, 60) || "Download", url: absoluteUrl(m[1], sourceUrl) }))
+    .filter((m): m is { name: string; url: string } => !!m.url && !m.url.includes("creativeconor.com"));
 
-  const installationGuide = sectionText(html, "Installation Guide") || sectionText(html, "How to Install");
-  const importantNotes = sectionText(html, "Important Notes") || sectionText(html, "Notes");
-  const systemRequirements = sectionText(html, "System Requirements") || sectionText(html, "Requirements");
+  const installationGuide = sectionText(html, "Installation Guide");
+  const importantNotes = sectionText(html, "Important Notes");
+  const systemRequirements = sectionText(html, "System Requirements");
 
   return {
     slug: slugFromUrl(sourceUrl),
@@ -327,7 +227,7 @@ export const scrapeSitemap = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: { sitemapUrl: string }) => z.object({ sitemapUrl: z.string().url() }).parse(d))
   .handler(async ({ data }) => {
-    const urls = (await readSitemap(data.sitemapUrl)).filter(isProductUrl);
+    const urls = (await readSitemap(data.sitemapUrl)).filter((u) => PRODUCT_RE.test(u));
     return { urls: Array.from(new Set(urls)) };
   });
 
@@ -359,7 +259,7 @@ export const importSitemapPosts = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     const kinds = data.kinds?.length ? data.kinds : ["games", "software", "apps", "console"];
-    const allUrls = (await readSitemap(data.sitemapUrl)).filter((url) => isProductUrl(url) && kinds.includes(kindFromUrl(url)));
+    const allUrls = (await readSitemap(data.sitemapUrl)).filter((url) => PRODUCT_RE.test(url) && kinds.includes(kindFromUrl(url)));
     const uniqueUrls = Array.from(new Set(allUrls)).slice(0, data.limit ?? 100);
     const slugs = uniqueUrls.map(slugFromUrl);
     const { data: existingRows } = slugs.length

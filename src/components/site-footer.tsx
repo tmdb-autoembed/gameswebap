@@ -1,6 +1,17 @@
 import { Link } from "@tanstack/react-router";
+import { Bell, Home, Plus, Search, Tv, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export function SiteFooter() {
+  const [authed, setAuthed] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setAuthed(!!data.session));
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => setAuthed(!!session));
+    return () => sub.subscription.unsubscribe();
+  }, []);
+
   return (
     <footer className="mt-20 border-t border-border/40 bg-background/60">
       <div className="max-w-[1400px] mx-auto px-4 lg:px-8 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -44,6 +55,20 @@ export function SiteFooter() {
       <div className="border-t border-border/40 py-5 text-center text-xs text-foreground/50">
         © 2026 CreativeConor. All rights reserved.
       </div>
+
+         <nav className="mmenu md:hidden fixed left-2 right-2 bottom-10 z-[70] h-16 rounded-[1.4rem] border border-white/10 bg-background/90 backdrop-blur-2xl shadow-[0_18px_60px_-32px_rgba(0,0,0,0.9)] flex items-center justify-around">
+        <Link to="/" className="mobile-dock-active" aria-label="Home"><Home size={24} /></Link>
+        <Link to="/games" className="mobile-dock-item" aria-label="Games"><Tv size={22} /></Link>
+        <Link to="/request-game" className="mobile-dock-create" aria-label="Request game"><Plus size={24} /></Link>
+        <Link to="/search" className="mobile-dock-item" aria-label="Search"><Search size={22} /></Link>
+        {authed ? (
+          <Link to="/messages" className="mobile-dock-item" aria-label="Messages"><Bell size={20} /></Link>
+        ) : (
+          <Link to="/auth" className="mobile-dock-item" aria-label="Sign in"><User size={20} /></Link>
+        )}
+      </nav>
+
+   
     </footer>
   );
 }

@@ -1,4 +1,5 @@
 import { createFileRoute, Link, Outlet, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import {
@@ -29,72 +30,50 @@ import {
   UserX,
   Vote,
   Wrench,
+  GripVertical,
+  ChevronDown,
 } from "lucide-react";
-import { getMyRole } from "@/lib/menu.functions";
+import { getMyRole, adminListMenu } from "@/lib/menu.functions";
 import { supabase } from "@/integrations/supabase/client";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 
 export const Route = createFileRoute("/_authenticated/admin")({ component: AdminLayout });
 
-const adminSections = [
-  {
-    label: "Main",
-    items: [
-      { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
-      { to: "/admin/posts", label: "Games", icon: Gamepad2 },
-      { to: "/admin/posts", label: "Software", icon: MonitorDown },
-      { to: "/admin/posts", label: "Apps", icon: AppWindow },
-      { to: "/admin/pages", label: "Posts", icon: FileText },
-    ],
-  },
-  {
-    label: "Community",
-    items: [
-      { to: "/admin/community", label: "Feed", icon: MessageSquare },
-      { to: "/admin/community", label: "Discussions", icon: BookOpen },
-      { to: "/admin/community", label: "Issues", icon: Wrench },
-      { to: "/admin/community", label: "Showcase", icon: Sparkles },
-      { to: "/admin/community", label: "Stories", icon: Store },
-      { to: "/admin/community", label: "Polls", icon: Vote },
-      { to: "/admin/requests", label: "Game Requests", icon: Megaphone },
-      { to: "/admin/reviews", label: "Reactions", icon: Star },
-      { to: "/admin/reports", label: "Reports", icon: Flag },
-      { to: "/admin/community", label: "Pinned Posts", icon: Pin },
-    ],
-  },
-  {
-    label: "Users",
-    items: [
-      { to: "/admin/users", label: "Members", icon: Users },
-      { to: "/admin/users", label: "Profiles", icon: Users },
-      { to: "/admin/users", label: "Verification", icon: Shield },
-      { to: "/admin/users", label: "Banned Users", icon: UserX },
-    ],
-  },
-  {
-    label: "System",
-    items: [
-      { to: "/admin/assets", label: "Downloads / Files", icon: Download },
-      { to: "/admin/assets", label: "Mirrors", icon: FolderTree },
-      { to: "/admin", label: "Stats", icon: BarChart3, exact: true },
-      { to: "/admin/assets", label: "Media Library", icon: Image },
-      { to: "/admin/settings", label: "SEO", icon: SearchCheck },
-      { to: "/admin/settings", label: "Appearance", icon: Palette },
-      { to: "/admin/menu", label: "Menus", icon: MenuIcon },
-      { to: "/admin/settings", label: "Settings", icon: Settings },
-      { to: "/admin/import", label: "Sitemap Importer", icon: Download },
-    ],
-  },
-] as const;
-
-const mobileItems = adminSections.flatMap((section) => section.items).slice(0, 10);
+const ICONS: Record<string, any> = {
+  Gamepad2, ArrowUp, TrendingUp, LayoutGrid, Smartphone, Lock, Heart, MessageSquare, Users, Circle,
+  AppWindow, BarChart3, BookOpen, Download, FileText, Flag, FolderTree, Image, LayoutDashboard,
+  LogOut, Megaphone, Menu: MenuIcon, MonitorDown, Palette, Pin, SearchCheck, Settings, Shield,
+  Sparkles, Star, Store, UserX, Vote, Wrench,
+};
 
 function AdminLayout() {
   const navigate = useNavigate();
+  const qc = useQueryClient();
   const roleFn = useServerFn(getMyRole);
-  const { data, isLoading } = useQuery({ queryKey: ["my-role"], queryFn: () => roleFn({}) });
+  const menuFn = useServerFn(adminListMenu);
+  const { data: role } = useQuery({ queryKey: ["my-role"], queryFn: () => roleFn({}) });
+  const { data: menuData } = useQuery({ queryKey: ["admin-menu-sidebar"], queryFn: () => menuFn({}) });
+
+  const saveMenuFn = useServerFn(adminSaveMenu);
+  const [editingMenu, setEditingMenu] = useState(false);
+  const [draftItems, setDraftItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (menuData?.items) setDraftItems(menuData.items);
+  }, [menuData]);
+
+  const saveMenu = useMutation({
+    mutationFn: () => Promise.all((draftItems ?? []).map((it: any) => saveMenuFn({ data: it }))),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["admin-menu-sidebar"] }),
+  });
 
   if (isLoading) return <div className="min-h-screen grid place-items-center text-foreground">Loading admin console…</div>;
-  if (!data?.isAdmin) return <div className="min-h-screen grid place-items-center text-foreground">403 — Admin access required.</div>;
+  if (!role?.isAdmin) return <RedirectAdminNonAdmin navigate={navigate} />;
+
+  const menuItems = menuData?.items ?? [];
+  const mainItems = menuItems.filter((m: any) => ["Games","Software","Apps"].includes(m.label));
+  const postItems = menuItems.filter((m: any) => !["Games","Software","Apps"].includes(m.label));
 
   return (
     <div className="admin-shell min-h-screen text-foreground">
