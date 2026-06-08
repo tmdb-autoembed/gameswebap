@@ -32,9 +32,7 @@ import {
   Wrench,
   GripVertical,
 } from "lucide-react";
-import { getMyRole, adminListMenu } from "@/lib/menu.functions";
-import { supabase } from "@/integrations/supabase/client";
-import { adminSaveMenu } from "@/lib/menu.functions";
+import { getMyRole, adminListMenu, adminSaveMenu } from "@/lib/menu.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({ component: AdminLayout });
 
@@ -201,21 +199,42 @@ function AdminLayout() {
           <div>
             <p className="px-3 mb-1 text-[10px] uppercase tracking-[0.24em] text-muted-foreground">Community</p>
             <div className="space-y-1">
-              {adminSections.map((section) => (
-                <div key={section.label}>
-                  <p className="px-3 mb-1 text-[10px] uppercase tracking-[0.24em] text-muted-foreground">{section.label}</p>
-                  <div className="space-y-1">
-                    {section.items.map((item) => {
-                      const Icon = item.icon;
-                      return (
-                        <Link key={`${section.label}-${item.label}`} to={item.to} activeProps={{ className: "admin-nav-active" }} className="admin-nav-item">
-                          <Icon size={17} /> <span>{item.label}</span>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
+              {adminSections[0].items.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link key={`${item.label}-${item.to}`} to={item.to} activeProps={{ className: "admin-nav-active" }} className="admin-nav-item">
+                    <Icon size={17} /> <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          <div>
+            <p className="px-3 mb-1 text-[10px] uppercase tracking-[0.24em] text-muted-foreground">Users</p>
+            <div className="space-y-1">
+              {adminSections[1].items.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link key={item.label} to={item.to} activeProps={{ className: "admin-nav-active" }} className="admin-nav-item">
+                    <Icon size={17} /> <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          <div>
+            <p className="px-3 mb-1 text-[10px] uppercase tracking-[0.24em] text-muted-foreground">System</p>
+            <div className="space-y-1">
+              {adminSections[2].items.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link key={item.label} to={item.to} activeProps={{ className: "admin-nav-active" }} className="admin-nav-item">
+                    <Icon size={17} /> <span>{item.label}</span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </nav>

@@ -1,17 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
-import { Code2, Megaphone, Save, SearchCheck, Settings2 } from "lucide-react";
+import { Code2, Megaphone, Save, SearchCheck, Settings2, Globe, Link2, Wrench } from "lucide-react";
 import { getSettings, adminSaveSetting } from "@/lib/menu.functions";
 import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/_authenticated/admin/settings")({ component: SettingsPage });
 
-type Tab = "identity" | "seo" | "code" | "ads";
+type Tab = "identity" | "general" | "seo" | "social" | "code" | "ads";
 
 const tabs = [
   { id: "identity", label: "Site Identity", icon: Settings2 },
+  { id: "general", label: "General", icon: Globe },
   { id: "seo", label: "SEO & Meta", icon: SearchCheck },
+  { id: "social", label: "Social Links", icon: Link2 },
   { id: "code", label: "Header/Footer Codes", icon: Code2 },
   { id: "ads", label: "Ads Management", icon: Megaphone },
 ] as const;
@@ -22,14 +24,18 @@ function SettingsPage() {
   const { data, refetch } = useQuery({ queryKey: ["settings"], queryFn: () => getFn({}) });
   const [active, setActive] = useState<Tab>("identity");
   const [site, setSite] = useState({ title: "", tagline: "", logoUrl: "", faviconUrl: "" });
+  const [general, setGeneral] = useState({ siteUrl: "", adminEmail: "", language: "en", timezone: "UTC" });
   const [seo, setSeo] = useState({ metaDescription: "", keywords: "", googleAnalyticsId: "" });
+  const [social, setSocial] = useState({ twitter: "", facebook: "", youtube: "", discord: "", instagram: "" });
   const [codes, setCodes] = useState({ headerCode: "", footerCode: "" });
   const [ads, setAds] = useState({ headerAd: "", sidebarAd: "", inContentAd: "" });
 
   useEffect(() => {
     if (data?.settings) {
       setSite(data.settings.site ?? { title: "", tagline: "", logoUrl: "", faviconUrl: "" });
+      setGeneral(data.settings.general ?? { siteUrl: "", adminEmail: "", language: "en", timezone: "UTC" });
       setSeo(data.settings.seo ?? { metaDescription: "", keywords: "", googleAnalyticsId: "" });
+      setSocial(data.settings.social ?? { twitter: "", facebook: "", youtube: "", discord: "", instagram: "" });
       setCodes(data.settings.codes ?? { headerCode: "", footerCode: "" });
       setAds(data.settings.ads ?? { headerAd: "", sidebarAd: "", inContentAd: "" });
     }
