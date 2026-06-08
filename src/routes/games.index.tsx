@@ -23,7 +23,7 @@ export function ArchivePage({ kind, title }: { kind: Kind; title: string }) {
   const [sort, setSort] = useState<Sort>("popular");
   const [offset, setOffset] = useState(0);
   const fn = useServerFn(listPublicPosts);
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["archive", kind, search, genre, sort, offset],
     queryFn: () => fn({ data: { kind, search, genre: genre || undefined, sort, limit: 25, offset } }),
   });
@@ -73,7 +73,9 @@ export function ArchivePage({ kind, title }: { kind: Kind; title: string }) {
         </div>
 
         {posts.length === 0 ? (
-          <p className="text-muted-foreground text-center py-20">No posts found. Admin can add posts or import from sitemap.</p>
+          <p className="text-muted-foreground text-center py-20">
+            {error ? `Unable to load posts: ${error.message}` : "No posts found. Admin can add posts or import from sitemap."}
+          </p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-5">
             {posts.map((post: any) => <ArchiveCard key={post.id} post={post} />)}
